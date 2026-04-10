@@ -5,12 +5,13 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Github } from "lucide-react";
-import { NAV_ITEMS, SOCIAL_LINKS } from "@/lib/constants";
+import { NAV_ITEMS } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "./ThemeToggle";
 import { Button } from "@/components/ui/Button";
+import { SanitySiteConfig } from "@/lib/types";
 
-export function Navbar() {
+export function Navbar({ config }: { config: SanitySiteConfig }) {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
   const [scrolled, setScrolled] = React.useState(false);
@@ -21,7 +22,6 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Close mobile menu on route change
   React.useEffect(() => {
     setMobileMenuOpen(false);
   }, [pathname]);
@@ -73,9 +73,11 @@ export function Navbar() {
             <div className="flex items-center gap-2 border-l border-border pl-6">
               <ThemeToggle />
               <Button variant="ghost" size="sm" asChild className="w-10 h-10 px-0 relative group">
-                <a href={SOCIAL_LINKS.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-                  <Github className="w-5 h-5 text-textMuted group-hover:text-textPrimary transition-colors" />
-                </a>
+                {config.githubUrl && (
+                  <a href={config.githubUrl} target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+                    <Github className="w-5 h-5 text-textMuted group-hover:text-textPrimary transition-colors" />
+                  </a>
+                )}
               </Button>
             </div>
           </nav>
@@ -141,9 +143,11 @@ export function Navbar() {
                 })}
               </ul>
               <div className="container mx-auto px-4 mt-8 pt-8 border-t border-border flex gap-4">
-                <a href={SOCIAL_LINKS.github} target="_blank" rel="noopener noreferrer" className="p-3 bg-surface rounded-full text-textMuted hover:text-textPrimary hover:bg-surface-2 transition-colors">
-                  <Github className="w-6 h-6" />
-                </a>
+                {config.githubUrl && (
+                  <a href={config.githubUrl} target="_blank" rel="noopener noreferrer" className="p-3 bg-surface rounded-full text-textMuted hover:text-textPrimary hover:bg-surface-2 transition-colors">
+                    <Github className="w-6 h-6" />
+                  </a>
+                )}
               </div>
             </nav>
           </motion.div>

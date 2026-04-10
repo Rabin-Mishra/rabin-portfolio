@@ -120,3 +120,74 @@ export const getAllCategories = groq`
     color
   }
 `;
+
+export const getEducation = groq`
+  *[_type == "education"] | order(startDate desc) {
+    _id,
+    institution,
+    degree,
+    field,
+    startDate,
+    endDate,
+    isCurrent,
+    gpa,
+    description,
+    institutionLogo
+  }
+`;
+
+export const getCertifications = groq`
+  *[_type == "certification"] | order(issuedDate desc) {
+    _id,
+    name,
+    issuer,
+    issuedDate,
+    credentialId,
+    credentialUrl,
+    category,
+    certificateImage
+  }
+`;
+
+export const getSkills = groq`
+  *[_type == "skill"] | order(category asc, name asc) {
+    _id,
+    name,
+    category,
+    proficiencyLevel,
+    icon
+  }
+`;
+
+export const getSiteConfig = groq`
+  *[_type == "siteConfig"][0] {
+    _id,
+    ownerName,
+    tagline,
+    shortBio,
+    longBio,
+    email,
+    phone,
+    location,
+    githubUrl,
+    linkedinUrl,
+    domain,
+    metaDescription,
+    profileImage,
+    ogImage,
+    resumeFile
+  }
+`;
+
+export const getWorkExperience = groq`
+  *[_type == "workExperience"] | order(startDate desc) {
+    _id,
+    company,
+    role,
+    startDate,
+    endDate,
+    isCurrent,
+    description,
+    techUsed
+  }
+`;

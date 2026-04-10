@@ -5,48 +5,73 @@ import { ThemeProvider } from '@/components/layout/ThemeProvider';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { Analytics } from '@vercel/analytics/react';
-import { SITE_CONFIG } from '@/lib/constants';
+import { client } from '@/sanity/lib/client';
+import { getSiteConfig } from '@/sanity/lib/queries';
+import { SanitySiteConfig } from '@/lib/types';
+import { SITE_CONFIG as FALLBACK_CONFIG } from '@/lib/constants';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
-export const metadata: Metadata = {
-  title: {
-    template: `Rabin Mishra | %s`,
-    default: "Rabin Mishra | DevOps Engineer",
-  },
-  description: SITE_CONFIG.description,
-  openGraph: {
-    title: "Rabin Mishra",
-    description: SITE_CONFIG.description,
-    url: SITE_CONFIG.url,
-    siteName: "Rabin Mishra Portfolio",
-    locale: "en_US",
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Rabin Mishra",
-    description: SITE_CONFIG.description,
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  // Fetch from Sanity
+  const config = await client.fetch<SanitySiteConfig | null>(getSiteConfig);
+  
+  // Use fallback if sanity fails or isn't seeded
+  const description = config?.shortBio || FALLBACK_CONFIG.description;
+  const url = config?.domain || FALLBACK_CONFIG.url;
+  const authorName = config?.ownerName || FALLBACK_CONFIG.author;
 
-export default function RootLayout({
+  return {
+    title: {
+      template: `${authorName} | %s`,
+      default: `${authorName} | DevOps Engineer`,
+    },
+    description: description,
+    openGraph: {
+      title: authorName,
+      description: description,
+      url: url,
+      siteName: `${authorName} Portfolio`,
+      locale: "en_US",
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: authorName,
+      description: description,
+    },
+  };
+}
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Fetch site config for Navbar/Footer consumption
+  const config = await client.fetch<SanitySiteConfig | null>(getSiteConfig);
+  
+  // Provide robust fallbacks if unseeded
+  const safeConfig: SanitySiteConfig = config || {
+    _id: "fallback",
+    ownerName: FALLBACK_CONFIG.author,
+    shortBio: FALLBACK_CONFIG.description,
+    email: FALLBACK_CONFIG.email,
+    domain: FALLBACK_CONFIG.url,
+  };
+
   // JSON-LD Schema
   const schema = {
     "@context": "https://schema.org",
     "@type": "Person",
-    name: "Rabin Mishra",
+    name: safeConfig.ownerName,
     jobTitle: "IT Engineer | Aspiring DevOps Engineer",
-    url: SITE_CONFIG.url,
-    email: SITE_CONFIG.email,
+    url: safeConfig.domain,
+    email: safeConfig.email,
     sameAs: [
-      "https://github.com/Rabin-Mishra",
-      "https://www.linkedin.com/in/rabin-mishra-3782ba214"
-    ]
+      safeConfig.githubUrl,
+      safeConfig.linkedinUrl
+    ].filter(Boolean)
   };
 
   return (
@@ -58,11 +83,11 @@ export default function RootLayout({
           enableSystem={false}
           disableTransitionOnChange
         >
-          <Navbar />
+          <Navbar config={safeConfig} />
           <main className="flex-1 pt-16">
             {children}
           </main>
-          <Footer />
+          <Footer config={safeConfig} />
         </ThemeProvider>
         <Analytics />
         <script

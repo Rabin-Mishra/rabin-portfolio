@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { Github, Linkedin, Mail } from "lucide-react";
-import { NAV_ITEMS, SOCIAL_LINKS, SITE_CONFIG } from "@/lib/constants";
+import { NAV_ITEMS } from "@/lib/constants";
+import { SanitySiteConfig } from "@/lib/types";
 
-export function Footer() {
+export function Footer({ config }: { config: SanitySiteConfig }) {
   return (
     <footer className="border-t border-border bg-surface mt-20">
       <div className="container mx-auto px-4 py-12 md:px-8">
@@ -13,7 +14,7 @@ export function Footer() {
               RM.
             </Link>
             <p className="text-textMuted max-w-sm">
-              {SITE_CONFIG.description}
+              {config.shortBio}
             </p>
           </div>
 
@@ -35,30 +36,36 @@ export function Footer() {
           <div className="flex flex-col gap-4">
             <h3 className="font-semibold text-textPrimary">Connect</h3>
             <ul className="flex flex-col gap-3">
-              <li>
-                <a href={SOCIAL_LINKS.github} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm text-textMuted hover:text-primary transition-colors group w-fit">
-                  <Github className="w-4 h-4 group-hover:scale-110 transition-transform" />
-                  <span>GitHub</span>
-                </a>
-              </li>
-              <li>
-                <a href={SOCIAL_LINKS.linkedin} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm text-textMuted hover:text-primary transition-colors group w-fit">
-                  <Linkedin className="w-4 h-4 group-hover:scale-110 transition-transform" />
-                  <span>LinkedIn</span>
-                </a>
-              </li>
-              <li>
-                <a href={`mailto:${SOCIAL_LINKS.email}`} className="flex items-center gap-2 text-sm text-textMuted hover:text-primary transition-colors group w-fit">
-                  <Mail className="w-4 h-4 group-hover:scale-110 transition-transform" />
-                  <span>Email</span>
-                </a>
-              </li>
+              {config.githubUrl && (
+                <li>
+                  <a href={config.githubUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm text-textMuted hover:text-primary transition-colors group w-fit">
+                    <Github className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                    <span>GitHub</span>
+                  </a>
+                </li>
+              )}
+              {config.linkedinUrl && (
+                <li>
+                  <a href={config.linkedinUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm text-textMuted hover:text-primary transition-colors group w-fit">
+                    <Linkedin className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                    <span>LinkedIn</span>
+                  </a>
+                </li>
+              )}
+              {config.email && (
+                <li>
+                  <a href={`mailto:${config.email}`} className="flex items-center gap-2 text-sm text-textMuted hover:text-primary transition-colors group w-fit">
+                    <Mail className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                    <span>Email</span>
+                  </a>
+                </li>
+              )}
             </ul>
           </div>
         </div>
 
         <div className="border-t border-border pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-textMuted">
-          <p>© {new Date().getFullYear()} {SITE_CONFIG.author}. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} {config.ownerName}. All rights reserved.</p>
           <p>Built with Next.js & deployed on Vercel</p>
         </div>
       </div>
