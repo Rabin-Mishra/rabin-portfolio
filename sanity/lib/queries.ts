@@ -175,7 +175,7 @@ export const getSiteConfig = groq`
     metaDescription,
     profileImage,
     ogImage,
-    resumeFile
+    "resumeFileUrl": resumeFile.asset->url
   }
 `;
 

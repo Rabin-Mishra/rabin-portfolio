@@ -56,6 +56,7 @@ export interface NavItem {
 export interface Skill {
   name: string;
   icon: string;
+  iconUrl?: string;
   category: string;
 }
 
@@ -114,7 +115,7 @@ export interface SanitySiteConfig {
   metaDescription?: string;
   profileImage?: any;
   ogImage?: any;
-  resumeFile?: any;
+  resumeFileUrl?: string;
 }
 
 export interface SanityWorkExperience {

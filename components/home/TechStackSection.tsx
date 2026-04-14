@@ -27,10 +27,17 @@ export function TechStackSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: (index % 6) * 0.1 }}
-              className="flex flex-col items-center justify-center p-6 bg-background rounded-xl border border-border group hover:border-primary/50 hover:shadow-[0_0_15px_rgba(59,130,246,0.15)] transition-all duration-300"
+              className="flex flex-col items-center justify-center p-6 bg-background rounded-xl border border-border group hover:border-primary/50 hover:shadow-[0_0_20px_rgba(59,130,246,0.15)] transition-all duration-300 cursor-default"
             >
-              <div className="w-12 h-12 mb-4 text-textMuted group-hover:text-primary transition-colors flex items-center justify-center">
-                <span className="text-3xl">💻</span>
+              <div className="w-12 h-12 mb-4 flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
+                <img
+                  src={skill.iconUrl || `https://cdn.simpleicons.org/${skill.icon}`}
+                  alt={skill.name}
+                  width={32}
+                  height={32}
+                  className="w-8 h-8 transition-all duration-300 group-hover:drop-shadow-[0_0_8px_rgba(59,130,246,0.5)]"
+                  loading="lazy"
+                />
               </div>
               <span className="font-medium text-sm text-textPrimary text-center">{skill.name}</span>
             </motion.div>

@@ -9,16 +9,16 @@ export const NAV_ITEMS: NavItem[] = [
 ];
 
 export const SKILLS: Skill[] = [
-  { name: "AWS", icon: "amazonaws", category: "Cloud" },
+  { name: "AWS", icon: "amazonwebservices", iconUrl: "/icons/aws.svg", category: "Cloud" },
   { name: "Docker", icon: "docker", category: "DevOps" },
   { name: "Terraform", icon: "terraform", category: "DevOps" },
-  { name: "Linux", icon: "linux", category: "OS" },
+  { name: "Linux", icon: "linux", iconUrl: "/icons/linux.svg", category: "OS" },
   { name: "Kubernetes", icon: "kubernetes", category: "DevOps" },
   { name: "GitHub Actions", icon: "githubactions", category: "CI/CD" },
-  { name: "Jenkins", icon: "jenkins", category: "CI/CD" },
+  { name: "Jenkins", icon: "jenkins", iconUrl: "/icons/jenkins.svg", category: "CI/CD" },
   { name: "Nginx", icon: "nginx", category: "Web Server" },
   { name: "Git", icon: "git", category: "DevOps" },
-  { name: "Python", icon: "python", category: "Programming" },
+  { name: "Python", icon: "python", iconUrl: "/icons/python.svg", category: "Programming" },
   { name: "Bash", icon: "gnubash", category: "Programming" },
   { name: "PostgreSQL", icon: "postgresql", category: "Database" },
 ];

@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { Mail, Terminal } from "lucide-react";
+import { Mail, Terminal, FileDown } from "lucide-react";
 import { SOCIAL_LINKS } from "@/lib/constants";
 import { Button } from "@/components/ui/Button";
 
@@ -57,7 +57,11 @@ const CODE_LINES = [
   "   32a938..42b322  main -> main",
 ];
 
-export function HeroSection() {
+interface HeroSectionProps {
+  resumeUrl?: string;
+}
+
+export function HeroSection({ resumeUrl }: HeroSectionProps) {
   const [roleIndex, setRoleIndex] = useState(0);
   const [displayedText, setDisplayedText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
@@ -138,6 +142,23 @@ export function HeroSection() {
             <Button asChild variant="outline" size="lg" className="rounded-full bg-surface/50 backdrop-blur-sm">
               <Link href="/blog">Read My Blog</Link>
             </Button>
+            {resumeUrl && (
+              <Button
+                asChild
+                variant="outline"
+                size="lg"
+                className="rounded-full bg-surface/50 backdrop-blur-sm border-primary/30 hover:border-primary hover:bg-primary/10 transition-all duration-300 group"
+              >
+                <a
+                  href={`${resumeUrl}?dl=ResumeRabin.pdf`}
+                  download
+                  rel="noopener noreferrer"
+                >
+                  <FileDown className="w-4 h-4 mr-2 group-hover:animate-bounce" />
+                  Download Resume
+                </a>
+              </Button>
+            )}
           </div>
 
           <div className="flex items-center gap-5 pt-8">
