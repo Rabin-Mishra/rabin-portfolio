@@ -31,6 +31,17 @@ export interface PortableTextCodeBlock {
   code?: string;
 }
 
+export interface PortableTextTableRow {
+  _key?: string;
+  cells: string[];
+}
+
+export interface PortableTextTableBlock {
+  _key?: string;
+  _type: "table";
+  rows: PortableTextTableRow[];
+}
+
 export interface PortableTextImageDimensions {
   width?: number;
   height?: number;
@@ -53,7 +64,8 @@ export interface PortableTextImageBlock {
 export type PortableTextNode =
   | PortableTextBlock
   | PortableTextCodeBlock
-  | PortableTextImageBlock;
+  | PortableTextImageBlock
+  | PortableTextTableBlock;
 
 export type PortableTextValue = PortableTextNode[] | string | null | undefined;
 

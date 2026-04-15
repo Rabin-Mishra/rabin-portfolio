@@ -6,6 +6,7 @@ import {
   getPortableTextHeadingId,
   type PortableTextCodeBlock,
   type PortableTextImageBlock,
+  type PortableTextTableBlock,
 } from "@/lib/portableText";
 import { urlForImage } from "@/sanity/lib/image";
 
@@ -28,7 +29,10 @@ function Heading({
   const id = getPortableTextHeadingId(value);
 
   return (
-    <Tag id={id || undefined} className={`${className} scroll-mt-24 text-textPrimary`}>
+    <Tag
+      id={id || undefined}
+      className={`${className} scroll-mt-28 text-textPrimary`}
+    >
       {children}
     </Tag>
   );
@@ -68,16 +72,66 @@ function PortableImage({ value }: { value: PortableTextImageBlock }) {
   );
 }
 
+function PortableTable({ value }: { value: PortableTextTableBlock }) {
+  const rows = value.rows ?? [];
+
+  if (rows.length < 2) {
+    return null;
+  }
+
+  const [headerRow, ...bodyRows] = rows;
+
+  return (
+    <div className="not-prose my-10 overflow-hidden rounded-[28px] border border-border/80 bg-background shadow-[0_24px_80px_-56px_rgba(15,23,42,0.45)]">
+      <div className="overflow-x-auto">
+        <table className="min-w-full border-collapse text-left">
+          <thead className="bg-surface">
+            <tr>
+              {headerRow.cells.map((cell, index) => (
+                <th
+                  key={`${value._key || "table"}-head-${index}`}
+                  className="border-b border-border px-5 py-4 text-sm font-semibold text-textPrimary"
+                >
+                  {cell}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {bodyRows.map((row, rowIndex) => (
+              <tr
+                key={row._key || `${value._key || "table"}-row-${rowIndex}`}
+                className="odd:bg-background even:bg-surface/50"
+              >
+                {row.cells.map((cell, cellIndex) => (
+                  <td
+                    key={`${row._key || rowIndex}-cell-${cellIndex}`}
+                    className="border-b border-border px-5 py-4 text-sm leading-7 text-textMuted"
+                  >
+                    {cell}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
 export const portableTextComponents: Partial<PortableTextReactComponents> = {
   block: {
     normal: ({ children }) => (
-      <p className="mb-4 leading-7 text-textPrimary">{children}</p>
+      <p className="mb-6 text-[1.12rem] leading-8 text-textPrimary/90">
+        {children}
+      </p>
     ),
     h1: ({ children, value }) => (
       <Heading
         as="h1"
         value={value}
-        className="mb-4 mt-10 text-3xl font-bold"
+        className="font-editorial mb-6 mt-14 text-4xl font-semibold tracking-[-0.03em] md:text-5xl"
       >
         {children}
       </Heading>
@@ -86,7 +140,7 @@ export const portableTextComponents: Partial<PortableTextReactComponents> = {
       <Heading
         as="h2"
         value={value}
-        className="mb-3 mt-8 border-b border-border pb-2 text-2xl font-semibold"
+        className="font-editorial mb-4 mt-14 text-3xl font-semibold tracking-[-0.03em] md:text-[2.15rem]"
       >
         {children}
       </Heading>
@@ -95,7 +149,7 @@ export const portableTextComponents: Partial<PortableTextReactComponents> = {
       <Heading
         as="h3"
         value={value}
-        className="mb-2 mt-6 text-xl font-semibold"
+        className="font-editorial mb-3 mt-10 text-2xl font-semibold tracking-[-0.02em]"
       >
         {children}
       </Heading>
@@ -104,38 +158,38 @@ export const portableTextComponents: Partial<PortableTextReactComponents> = {
       <Heading
         as="h4"
         value={value}
-        className="mb-2 mt-4 text-lg font-medium"
+        className="font-editorial mb-3 mt-8 text-xl font-semibold"
       >
         {children}
       </Heading>
     ),
     blockquote: ({ children }) => (
-      <blockquote className="my-6 rounded-r-xl border-l-4 border-primary bg-surface px-5 py-4 italic text-textMuted">
+      <blockquote className="my-10 rounded-[24px] border border-border/70 bg-surface px-6 py-6 text-[1.08rem] italic leading-8 text-textMuted shadow-[0_18px_44px_-36px_rgba(15,23,42,0.45)]">
         {children}
       </blockquote>
     ),
   },
   list: {
     bullet: ({ children }) => (
-      <ul className="mb-4 list-disc space-y-1 pl-6 text-textPrimary">
+      <ul className="mb-8 list-disc space-y-3 pl-6 text-[1.08rem] leading-8 text-textPrimary/90 marker:text-primary">
         {children}
       </ul>
     ),
     number: ({ children }) => (
-      <ol className="mb-4 list-decimal space-y-1 pl-6 text-textPrimary">
+      <ol className="mb-8 list-decimal space-y-3 pl-6 text-[1.08rem] leading-8 text-textPrimary/90 marker:font-semibold marker:text-primary">
         {children}
       </ol>
     ),
   },
   listItem: {
-    bullet: ({ children }) => <li className="leading-7">{children}</li>,
-    number: ({ children }) => <li className="leading-7">{children}</li>,
+    bullet: ({ children }) => <li className="pl-1">{children}</li>,
+    number: ({ children }) => <li className="pl-1">{children}</li>,
   },
   marks: {
     strong: ({ children }) => <strong className="font-bold">{children}</strong>,
     em: ({ children }) => <em className="italic">{children}</em>,
     code: ({ children }) => (
-      <code className="rounded-md bg-slate-900 px-1.5 py-0.5 font-mono text-[0.9em] text-slate-100 dark:bg-slate-800">
+      <code className="rounded-md border border-border bg-surface px-1.5 py-0.5 font-mono text-[0.92em] text-textPrimary">
         {children}
       </code>
     ),
@@ -152,7 +206,7 @@ export const portableTextComponents: Partial<PortableTextReactComponents> = {
           href={href}
           target={openInNewTab ? "_blank" : undefined}
           rel={openInNewTab ? "noreferrer noopener" : undefined}
-          className="font-medium text-primary transition-colors hover:text-secondary hover:underline"
+          className="font-semibold text-primary decoration-primary/30 decoration-2 underline-offset-4 transition-colors hover:text-secondary hover:underline"
         >
           {children}
         </a>
@@ -171,5 +225,6 @@ export const portableTextComponents: Partial<PortableTextReactComponents> = {
         />
       );
     },
+    table: ({ value }) => <PortableTable value={value as PortableTextTableBlock} />,
   },
 };

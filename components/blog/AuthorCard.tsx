@@ -3,24 +3,34 @@ import { SOCIAL_LINKS } from "@/lib/constants";
 
 export function AuthorCard() {
   return (
-    <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6 p-6 md:p-8 rounded-xl border border-border bg-surface-2 my-12 relative overflow-hidden">
-      <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-3xl -z-10 translate-x-10 -translate-y-10" />
-      <div className="relative w-20 h-20 rounded-full overflow-hidden border-2 border-primary/30 shrink-0 bg-background flex items-center justify-center font-bold text-xl text-textMuted shadow-lg">
+    <div className="relative my-14 overflow-hidden rounded-[30px] border border-border/70 bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.12),transparent_38%),linear-gradient(180deg,rgba(248,250,252,0.95),rgba(241,245,249,0.92))] p-6 shadow-[0_24px_80px_-56px_rgba(15,23,42,0.45)] dark:bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.14),transparent_38%),linear-gradient(180deg,rgba(17,17,17,0.96),rgba(10,10,10,0.92))] md:p-8">
+      <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-start">
+        <div className="relative flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-full border-2 border-primary/20 bg-background text-xl font-bold text-textMuted shadow-lg">
         RM
-      </div>
-      <div className="flex-1 text-center sm:text-left">
-        <h4 className="text-lg font-bold text-textPrimary mb-1">Rabin Mishra</h4>
-        <p className="text-primary text-sm font-medium mb-3">IT Engineer & Aspiring DevOps</p>
-        <p className="text-textMuted text-sm leading-relaxed mb-5 max-w-xl">
-          Passionate about building resilient cloud infrastructure and deploying reliable CI/CD pipelines. Writing to share learnings from the field and my personal experiences.
-        </p>
-        <div className="flex items-center justify-center sm:justify-start gap-4">
-          <a href={SOCIAL_LINKS.github} target="_blank" rel="noopener noreferrer" className="p-2 border border-border rounded-full hover:bg-surface text-textMuted hover:text-textPrimary transition-colors">
-            <Github className="w-4 h-4" />
-          </a>
-          <a href={SOCIAL_LINKS.linkedin} target="_blank" rel="noopener noreferrer" className="p-2 border border-border rounded-full hover:bg-surface text-textMuted hover:text-primary transition-colors">
-            <Linkedin className="w-4 h-4" />
-          </a>
+        </div>
+        <div className="flex-1 text-center sm:text-left">
+          <p className="mb-2 text-xs font-semibold uppercase tracking-[0.24em] text-textMuted">
+            About the author
+          </p>
+          <h4 className="font-editorial text-3xl font-semibold text-textPrimary">
+            Rabin Mishra
+          </h4>
+          <p className="mt-2 text-sm font-medium text-primary">
+            IT Engineer and DevOps-focused builder
+          </p>
+          <p className="mt-4 max-w-2xl text-sm leading-7 text-textMuted">
+            I write about resilient infrastructure, practical automation, and the lessons that
+            come from shipping systems in the real world. The goal is simple: make complex
+            implementation details feel approachable and useful.
+          </p>
+          <div className="mt-6 flex items-center justify-center gap-4 sm:justify-start">
+            <a href={SOCIAL_LINKS.github} target="_blank" rel="noopener noreferrer" className="rounded-full border border-border bg-background/80 p-2 text-textMuted transition-colors hover:bg-surface hover:text-textPrimary">
+              <Github className="w-4 h-4" />
+            </a>
+            <a href={SOCIAL_LINKS.linkedin} target="_blank" rel="noopener noreferrer" className="rounded-full border border-border bg-background/80 p-2 text-textMuted transition-colors hover:bg-surface hover:text-primary">
+              <Linkedin className="w-4 h-4" />
+            </a>
+          </div>
         </div>
       </div>
     </div>

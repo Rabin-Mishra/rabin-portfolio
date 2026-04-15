@@ -127,5 +127,56 @@ export default defineType({
         }),
       ],
     }),
+    defineArrayMember({
+      name: "table",
+      title: "Table",
+      type: "object",
+      fields: [
+        defineField({
+          name: "rows",
+          title: "Rows",
+          type: "array",
+          of: [
+            defineArrayMember({
+              name: "row",
+              title: "Row",
+              type: "object",
+              fields: [
+                defineField({
+                  name: "cells",
+                  title: "Cells",
+                  type: "array",
+                  of: [defineArrayMember({ type: "string" })],
+                  validation: (Rule) => Rule.required().min(1),
+                }),
+              ],
+              preview: {
+                select: {
+                  cells: "cells",
+                },
+                prepare({ cells }: { cells?: string[] }) {
+                  return {
+                    title: cells?.join(" | ") || "Empty row",
+                  };
+                },
+              },
+            }),
+          ],
+          validation: (Rule) => Rule.required().min(2),
+        }),
+      ],
+      preview: {
+        select: {
+          rows: "rows",
+        },
+        prepare({ rows }: { rows?: Array<{ cells?: string[] }> }) {
+          const header = rows?.[0]?.cells?.join(" | ") || "Markdown table";
+          return {
+            title: "Table",
+            subtitle: header,
+          };
+        },
+      },
+    }),
   ],
 });

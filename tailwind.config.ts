@@ -25,6 +25,7 @@ const config: Config = {
       fontFamily: {
         sans: ["Inter", "sans-serif"],
         mono: ["JetBrains Mono", "monospace"],
+        editorial: ["var(--font-editorial)"],
       },
     },
   },

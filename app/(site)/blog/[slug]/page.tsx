@@ -93,57 +93,63 @@ export default async function BlogPostPage({ params }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <div className="container mx-auto px-4 md:px-8 py-12">
-        <div className="flex flex-col lg:flex-row gap-12 relative">
-          <article className="flex-1 max-w-3xl mx-auto lg:mx-0 w-full min-w-0">
-            {/* Breadcrumb */}
-            <div className="flex items-center gap-2 text-sm text-textMuted mb-8 font-medium">
+      <div className="mx-auto max-w-[1500px] px-4 py-10 md:px-8 md:py-14">
+        <div className="grid gap-12 xl:grid-cols-[minmax(0,1fr)_280px] xl:items-start">
+          <article className="min-w-0">
+            <header className="mb-12 overflow-hidden rounded-[34px] border border-border/70 bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.12),transparent_34%),linear-gradient(180deg,rgba(248,250,252,0.96),rgba(255,255,255,0.88))] shadow-[0_30px_90px_-60px_rgba(15,23,42,0.45)] dark:bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.14),transparent_34%),linear-gradient(180deg,rgba(17,17,17,0.98),rgba(10,10,10,0.92))]">
+              <div className="px-6 py-8 md:px-10 md:py-10">
+                <div className="mb-6 flex items-center gap-2 text-sm font-medium text-textMuted">
               <Link href="/blog" className="hover:text-primary transition-colors">
                 Blog
               </Link>
               <span>/</span>
               <span className="text-textPrimary truncate">{post.title}</span>
-            </div>
-
-            <header className="mb-10">
-              {post.category && (
-                <Badge className="bg-primary/10 text-primary border-primary/20 mb-6 px-3 py-1 text-sm font-semibold">
-                  {post.category.title}
-                </Badge>
-              )}
-
-              <h1 className="text-3xl md:text-5xl font-extrabold text-textPrimary tracking-tight mb-6 leading-[1.2]">
-                {post.title}
-              </h1>
-
-              <div className="flex flex-wrap items-center justify-between gap-4 pb-8 border-b border-border">
-                <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 rounded-full bg-surface-2 border border-border flex items-center justify-center text-xs font-bold font-mono text-textMuted">
-                    RM
-                  </div>
-                  <div>
-                    <div className="text-sm font-bold text-textPrimary">
-                      Rabin Mishra
-                    </div>
-                    <div className="flex flex-wrap items-center gap-3 text-xs text-textMuted font-medium mt-1">
-                      <span className="flex items-center gap-1">
-                        <Calendar className="w-3 h-3" />{" "}
-                        {formatDate(post.publishedAt)}
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <Clock className="w-3 h-3" /> {post.readTime || 5} min
-                        read
-                      </span>
-                    </div>
-                  </div>
                 </div>
 
-                <ShareButtons url={postUrl} title={post.title} />
-              </div>
-            </header>
+                {post.category && (
+                  <Badge className="mb-6 border-primary/20 bg-primary/10 px-3 py-1 text-sm font-semibold text-primary">
+                    {post.category.title}
+                  </Badge>
+                )}
 
-            {post.coverImage && (
-              <div className="aspect-[16/9] md:aspect-[2/1] relative overflow-hidden rounded-2xl mb-12 bg-surface border border-border shadow-md">
+                <h1 className="font-editorial max-w-5xl text-4xl font-semibold leading-[1.02] tracking-[-0.05em] text-textPrimary md:text-6xl">
+                  {post.title}
+                </h1>
+
+                {post.excerpt ? (
+                  <p className="mt-6 max-w-3xl text-lg leading-8 text-textMuted md:text-[1.35rem]">
+                    {post.excerpt}
+                  </p>
+                ) : null}
+
+                <div className="mt-8 flex flex-wrap items-center justify-between gap-5 border-t border-border/80 pt-6">
+                  <div className="flex items-center gap-4">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-full border border-border bg-background/85 text-sm font-bold text-textMuted shadow-sm">
+                      RM
+                    </div>
+                  <div>
+                      <div className="text-sm font-bold text-textPrimary">
+                      Rabin Mishra
+                    </div>
+                      <div className="mt-1 flex flex-wrap items-center gap-3 text-xs font-medium text-textMuted">
+                        <span className="flex items-center gap-1">
+                          <Calendar className="h-3 w-3" />
+                        {formatDate(post.publishedAt)}
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <Clock className="h-3 w-3" />
+                          {post.readTime || 5} min read
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <ShareButtons url={postUrl} title={post.title} />
+                </div>
+              </div>
+
+              {post.coverImage && (
+                <div className="relative aspect-[16/9] overflow-hidden border-t border-border bg-surface md:aspect-[2.25/1]">
                 <Image
                   src={urlForImage(post.coverImage).url()}
                   alt={post.title || "Post cover"}
@@ -151,20 +157,23 @@ export default async function BlogPostPage({ params }: Props) {
                   priority
                   className="object-cover"
                 />
-              </div>
-            )}
+                </div>
+              )}
+            </header>
 
-            <PortableTextRenderer value={post.body} />
+            <div className="w-full">
+              <PortableTextRenderer value={post.body} />
+            </div>
 
             {post.tags && post.tags.length > 0 && (
-              <div className="mt-12 flex flex-wrap gap-2 pt-8 border-t border-border">
-                <span className="text-textMuted font-medium text-sm mr-2 py-1">
+              <div className="mx-auto mt-14 flex max-w-[72ch] flex-wrap gap-2 border-t border-border pt-8">
+                <span className="mr-2 py-1 text-sm font-medium text-textMuted">
                   Tags:
                 </span>
                 {post.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="text-xs font-medium text-textMuted bg-surface border border-border px-3 py-1.5 rounded-md hover:text-primary transition-colors cursor-pointer"
+                    className="cursor-pointer rounded-full border border-border bg-surface px-3 py-1.5 text-xs font-medium text-textMuted transition-colors hover:text-primary"
                   >
                     #{tag}
                   </span>
@@ -182,7 +191,7 @@ export default async function BlogPostPage({ params }: Props) {
             )}
           </article>
 
-          <aside className="w-full lg:w-72 shrink-0">
+          <aside className="min-w-0">
             <TableOfContents headings={headings} />
           </aside>
         </div>
