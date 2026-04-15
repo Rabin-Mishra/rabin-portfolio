@@ -1,4 +1,4 @@
-import { PortableTextBlock } from "@portabletext/react";
+import type { PortableTextValue } from "./portableText";
 
 export interface SanityProject {
   id: string;
@@ -22,13 +22,13 @@ export interface SanityPost {
   category: SanityCategory;
   tags: string[];
   publishedAt: string;
-  body: PortableTextBlock[];
+  body: PortableTextValue;
   readTime: number;
   relatedPosts: SanityPost[];
 }
 
 export interface SanityCategory {
-  id: string;
+  id?: string;
   title: string;
   slug: string;
   color: string;

@@ -1,4 +1,5 @@
 import { defineField, defineType } from "sanity";
+import { MarkdownNoticeInput } from "../components/MarkdownNoticeInput";
 
 export default defineType({
   name: "post",
@@ -57,8 +58,12 @@ export default defineType({
     defineField({
       name: "body",
       title: "Body",
-      type: "array",
-      of: [{ type: "block" }],
+      type: "blockContent",
+      description:
+        "Do not paste raw Markdown here. Use the toolbar buttons to format headings, lists, and code blocks.",
+      components: {
+        input: MarkdownNoticeInput,
+      },
       validation: (Rule) => Rule.required(),
     }),
     defineField({

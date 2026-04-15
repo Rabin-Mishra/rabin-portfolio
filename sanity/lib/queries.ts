@@ -45,13 +45,23 @@ export const getPostBySlug = groq`
     excerpt,
     coverImage,
     category->{
+      "id": _id,
       title,
       "slug": slug.current,
       color
     },
     tags,
     publishedAt,
-    body,
+    body[]{
+      ...,
+      _type == "image" => {
+        ...,
+        "imageUrl": asset->url,
+        "dimensions": asset->metadata.dimensions,
+        alt,
+        caption
+      }
+    },
     readTime,
     "relatedPosts": *[_type == "post" && _id != ^._id && category._ref == ^.category._ref] | order(publishedAt desc)[0...3] {
       "id": _id,

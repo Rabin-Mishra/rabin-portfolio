@@ -40,6 +40,6 @@
     "node_modules",
     "sanity/seed.ts",
     "sanity/seed-extended.ts",
-    "scripts/cleanup.ts"
+    "scripts/**/*.ts"
   ]
 }

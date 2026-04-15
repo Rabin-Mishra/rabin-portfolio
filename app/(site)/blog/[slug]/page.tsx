@@ -4,8 +4,10 @@ import Image from "next/image";
 import { Clock, Calendar } from "lucide-react";
 import { client } from "@/sanity/lib/client";
 import { urlForImage } from "@/sanity/lib/image";
+import { getPostBySlug } from "@/sanity/lib/queries";
 import { SanityPost } from "@/lib/types";
-import { formatDate, slugify } from "@/lib/utils";
+import { extractPortableTextHeadings } from "@/lib/portableText";
+import { formatDate } from "@/lib/utils";
 import { PortableTextRenderer } from "@/components/blog/PortableTextRenderer";
 import { TableOfContents } from "@/components/blog/TableOfContents";
 import { ShareButtons } from "@/components/blog/ShareButtons";
@@ -26,14 +28,9 @@ type Props = {
   params: Promise<{ slug: string }>;
 };
 
-const getPostQuery = `*[_type == "post" && slug.current == $slug][0] {
-  "id": _id, title, "slug": slug.current, excerpt, publishedAt, body, readTime, coverImage, tags,
-  category->{ "id": _id, title }
-}`;
-
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const post = await client.fetch<SanityPost>(getPostQuery, { slug });
+  const post = await client.fetch<SanityPost>(getPostBySlug, { slug });
   if (!post) return {};
 
   return {
@@ -53,39 +50,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-// Extract headings directly from Portable Text JSON array
-function extractHeadings(body: any[]) {
-  if (!body) return [];
-  const headings = body.filter(
-    (block) =>
-      block._type === "block" &&
-      (block.style === "h2" || block.style === "h3")
-  );
-  return headings.map((heading) => {
-    const text =
-      heading.children
-        ?.map((child: any) =>
-          typeof child === "string" ? child : child.text || ""
-        )
-        .join("") || "";
-    const id = slugify(text) || Math.random().toString();
-    return {
-      text,
-      id,
-      level: heading.style === "h2" ? 2 : 3,
-    };
-  });
-}
-
 export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params;
-  const post = await client.fetch<SanityPost>(getPostQuery, { slug });
+  const post = await client.fetch<SanityPost>(getPostBySlug, { slug });
 
   if (!post) {
     notFound();
   }
 
-  const headings = extractHeadings(post.body);
+  const headings = extractPortableTextHeadings(post.body);
   const postUrl = `${SITE_CONFIG.url}/blog/${post.slug}`;
 
   // JSON-LD Schema

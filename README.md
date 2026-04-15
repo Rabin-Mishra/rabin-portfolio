@@ -94,8 +94,18 @@ For testing the production build behavior exactly as it would run on a Linux ser
 
 1. Navigate to your deployed Studio (e.g., `https://rabinmishra.com.np/studio`) or run locally.
 2. Click **"Posts"** on the left pane, then click **"Create"**.
-3. Fill out the `Title`, `Slug` (Click "Generate"), select a `Category`, add a `Cover Image`, and write your `Body` utilizing PortableText blocks and code snippets.
+3. Fill out the `Title`, `Slug` (Click "Generate"), select a `Category`, add a `Cover Image`, and write your `Body` utilizing Portable Text blocks, inline images, and code snippets.
 4. Hit **Publish**. Because of Next.js Incremental Static Regeneration (ISR), your website will automatically rebuild the cached variant and surface your blog post within 1 hour.
+
+## Migrate Older Markdown Posts
+
+If an older blog post body was saved as raw Markdown instead of Portable Text, run this once after pulling the latest code:
+
+```bash
+npm run migrate:posts
+```
+
+The script reads posts that still look like Markdown, converts them into Portable Text blocks, and patches them back into Sanity. It requires `SANITY_API_TOKEN` in `.env.local`.
 
 ## Adding New Projects
 
