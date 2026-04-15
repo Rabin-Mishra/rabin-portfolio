@@ -6,7 +6,10 @@ import { client } from "@/sanity/lib/client";
 import { urlForImage } from "@/sanity/lib/image";
 import { getPostBySlug } from "@/sanity/lib/queries";
 import { SanityPost } from "@/lib/types";
-import { extractPortableTextHeadings } from "@/lib/portableText";
+import {
+  extractPortableTextHeadings,
+  extractPortableTextHtmlDocument,
+} from "@/lib/portableText";
 import { formatDate } from "@/lib/utils";
 import { PortableTextRenderer } from "@/components/blog/PortableTextRenderer";
 import { TableOfContents } from "@/components/blog/TableOfContents";
@@ -59,6 +62,8 @@ export default async function BlogPostPage({ params }: Props) {
   }
 
   const headings = extractPortableTextHeadings(post.body);
+  const htmlDocument = extractPortableTextHtmlDocument(post.body);
+  const hasTableOfContents = !htmlDocument && headings.length > 0;
   const postUrl = `${SITE_CONFIG.url}/blog/${post.slug}`;
 
   // JSON-LD Schema
@@ -94,7 +99,13 @@ export default async function BlogPostPage({ params }: Props) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <div className="mx-auto max-w-[1500px] px-4 py-10 md:px-8 md:py-14">
-        <div className="grid gap-12 xl:grid-cols-[minmax(0,1fr)_280px] xl:items-start">
+        <div
+          className={`grid gap-12 ${
+            hasTableOfContents
+              ? "xl:grid-cols-[minmax(0,1fr)_280px] xl:items-start"
+              : ""
+          }`}
+        >
           <article className="min-w-0">
             <header className="mb-12 overflow-hidden rounded-[34px] border border-border/70 bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.12),transparent_34%),linear-gradient(180deg,rgba(248,250,252,0.96),rgba(255,255,255,0.88))] shadow-[0_30px_90px_-60px_rgba(15,23,42,0.45)] dark:bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.14),transparent_34%),linear-gradient(180deg,rgba(17,17,17,0.98),rgba(10,10,10,0.92))]">
               <div className="px-6 py-8 md:px-10 md:py-10">
@@ -191,9 +202,11 @@ export default async function BlogPostPage({ params }: Props) {
             )}
           </article>
 
-          <aside className="min-w-0">
-            <TableOfContents headings={headings} />
-          </aside>
+          {hasTableOfContents ? (
+            <aside className="min-w-0">
+              <TableOfContents headings={headings} />
+            </aside>
+          ) : null}
         </div>
       </div>
     </>

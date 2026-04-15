@@ -2,8 +2,20 @@ import { PortableText } from "@portabletext/react";
 import { portableTextComponents } from "./PortableTextComponents";
 import type { PortableTextValue } from "@/lib/portableText";
 import { looksLikeMarkdown, markdownToPortableText } from "@/lib/markdown";
+import { extractPortableTextHtmlDocument } from "@/lib/portableText";
+import { HtmlDocumentEmbed } from "./HtmlDocumentEmbed";
 
 export function PortableTextRenderer({ value }: { value: PortableTextValue }) {
+  const htmlDocument = extractPortableTextHtmlDocument(value);
+
+  if (htmlDocument) {
+    return (
+      <div className="article-body">
+        <HtmlDocumentEmbed html={htmlDocument} title="Embedded HTML article" />
+      </div>
+    );
+  }
+
   if (typeof value === "string") {
     if (looksLikeMarkdown(value)) {
       return (

@@ -113,6 +113,63 @@ export function getPortableTextHeadingId(
   return slugify(getPortableTextBlockText(block));
 }
 
+function getPortableTextSourceText(body: PortableTextValue): string {
+  if (typeof body === "string") {
+    return body.trim();
+  }
+
+  if (!Array.isArray(body) || body.length === 0) {
+    return "";
+  }
+
+  return body
+    .map((node) => {
+      if (node._type === "block") {
+        return getPortableTextBlockText(node);
+      }
+
+      if (node._type === "codeBlock") {
+        return node.code ?? "";
+      }
+
+      if (node._type === "table") {
+        return node.rows
+          .map((row) => row.cells.join(" | "))
+          .join("\n");
+      }
+
+      return "";
+    })
+    .filter(Boolean)
+    .join("\n\n")
+    .trim();
+}
+
+export function looksLikeHtmlDocument(value: string): boolean {
+  const trimmedValue = value.trim();
+
+  if (!trimmedValue) {
+    return false;
+  }
+
+  return (
+    /^<!doctype\s+html/i.test(trimmedValue) ||
+    (/<html[\s>]/i.test(trimmedValue) && /<body[\s>]/i.test(trimmedValue))
+  );
+}
+
+export function extractPortableTextHtmlDocument(
+  body: PortableTextValue
+): string | null {
+  const sourceText = getPortableTextSourceText(body);
+
+  if (!looksLikeHtmlDocument(sourceText)) {
+    return null;
+  }
+
+  return sourceText;
+}
+
 function extractMarkdownHeadings(markdown: string): PortableTextHeading[] {
   return markdown
     .split(/\r?\n/)

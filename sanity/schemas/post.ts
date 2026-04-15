@@ -60,7 +60,7 @@ export default defineType({
       title: "Body",
       type: "blockContent",
       description:
-        "Paste Markdown from ChatGPT into an empty editor to auto-convert it, or use the helper box to convert Markdown into Portable Text.",
+        "Paste Markdown from ChatGPT into an empty editor to auto-convert it, use the helper box to convert Markdown into Portable Text, or paste a full HTML document to render it as a sandboxed embed on the blog page.",
       components: {
         input: MarkdownNoticeInput,
       },
