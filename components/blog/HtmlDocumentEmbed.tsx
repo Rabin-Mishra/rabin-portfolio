@@ -4,20 +4,33 @@ import { useEffect, useRef, useState } from "react";
 
 const MIN_IFRAME_HEIGHT = 640;
 
-function getDocumentHeight(iframe: HTMLIFrameElement) {
-  const doc = iframe.contentDocument;
+function getDocumentHeight(iframe: HTMLIFrameElement): number {
+  try {
+    const doc = iframe.contentDocument;
 
-  if (!doc) {
+    if (!doc) {
+      return MIN_IFRAME_HEIGHT;
+    }
+
+    const docEl = doc.documentElement;
+    const body = doc.body;
+
+    // Both can be null during early load or cross-origin
+    if (!docEl && !body) {
+      return MIN_IFRAME_HEIGHT;
+    }
+
+    return Math.max(
+      docEl?.scrollHeight ?? 0,
+      docEl?.offsetHeight ?? 0,
+      body?.scrollHeight ?? 0,
+      body?.offsetHeight ?? 0,
+      MIN_IFRAME_HEIGHT
+    );
+  } catch {
+    // Cross-origin or security error
     return MIN_IFRAME_HEIGHT;
   }
-
-  return Math.max(
-    doc.documentElement.scrollHeight,
-    doc.documentElement.offsetHeight,
-    doc.body?.scrollHeight ?? 0,
-    doc.body?.offsetHeight ?? 0,
-    MIN_IFRAME_HEIGHT
-  );
 }
 
 export function HtmlDocumentEmbed({
@@ -53,7 +66,14 @@ export function HtmlDocumentEmbed({
     const handleLoad = () => {
       updateHeight();
 
-      const doc = iframe.contentDocument;
+      let doc: Document | null = null;
+
+      try {
+        doc = iframe.contentDocument;
+      } catch {
+        // Cross-origin — cannot access contentDocument
+        return;
+      }
 
       if (!doc) {
         return;
@@ -63,13 +83,17 @@ export function HtmlDocumentEmbed({
       resizeObserver = new ResizeObserver(() => {
         updateHeight();
       });
-      resizeObserver.observe(doc.documentElement);
+
+      // Only observe elements that actually exist
+      if (doc.documentElement) {
+        resizeObserver.observe(doc.documentElement);
+      }
 
       if (doc.body) {
         resizeObserver.observe(doc.body);
       }
 
-      for (const image of Array.from(doc.images)) {
+      for (const image of Array.from(doc.images ?? [])) {
         if (!image.complete) {
           image.addEventListener("load", updateHeight);
         }
@@ -83,21 +107,28 @@ export function HtmlDocumentEmbed({
     };
 
     iframe.addEventListener("load", handleLoad);
-    handleLoad();
+
+    // Delay initial call so the iframe has time to initialize
+    const timer = window.setTimeout(handleLoad, 100);
 
     return () => {
+      window.clearTimeout(timer);
       iframe.removeEventListener("load", handleLoad);
       resizeObserver?.disconnect();
       frameWindow?.removeEventListener("resize", updateHeight);
 
-      const doc = iframe.contentDocument;
+      try {
+        const doc = iframe.contentDocument;
 
-      if (!doc) {
-        return;
-      }
+        if (!doc) {
+          return;
+        }
 
-      for (const image of Array.from(doc.images)) {
-        image.removeEventListener("load", updateHeight);
+        for (const image of Array.from(doc.images ?? [])) {
+          image.removeEventListener("load", updateHeight);
+        }
+      } catch {
+        // Cross-origin cleanup — safe to ignore
       }
     };
   }, [html]);

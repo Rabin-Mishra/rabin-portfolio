@@ -8,9 +8,10 @@ import { HtmlDocumentEmbed } from "./HtmlDocumentEmbed";
 export function PortableTextRenderer({ value }: { value: PortableTextValue }) {
   const htmlDocument = extractPortableTextHtmlDocument(value);
 
+  // HTML embeds get FULL width — no max-w constraint
   if (htmlDocument) {
     return (
-      <div className="article-body mx-auto max-w-3xl px-4 sm:px-6 lg:px-0">
+      <div className="article-body w-full">
         <HtmlDocumentEmbed html={htmlDocument} title="Embedded HTML article" />
       </div>
     );
