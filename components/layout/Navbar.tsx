@@ -4,7 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Linkedin } from "lucide-react";
 import { NAV_ITEMS } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "./ThemeToggle";
@@ -93,6 +93,11 @@ export function Navbar({ config }: { config: SanitySiteConfig }) {
                   </a>
                 )}
               </Button>
+              <Button variant="ghost" size="sm" asChild className="w-10 h-10 px-0 relative group">
+                <a href={config.linkedinUrl || "https://www.linkedin.com/in/rabin-mishra-3782ba214"} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                  <Linkedin className="w-5 h-5 text-textMuted group-hover:text-textPrimary transition-colors" />
+                </a>
+              </Button>
             </div>
           </nav>
 
@@ -162,6 +167,9 @@ export function Navbar({ config }: { config: SanitySiteConfig }) {
                     <GithubIcon className="w-6 h-6" />
                   </a>
                 )}
+                <a href={config.linkedinUrl || "https://www.linkedin.com/in/rabin-mishra-3782ba214"} target="_blank" rel="noopener noreferrer" className="p-3 bg-surface rounded-full text-textMuted hover:text-textPrimary hover:bg-surface-2 transition-colors">
+                  <Linkedin className="w-6 h-6" />
+                </a>
               </div>
             </nav>
           </motion.div>

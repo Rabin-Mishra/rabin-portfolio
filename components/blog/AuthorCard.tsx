@@ -1,4 +1,4 @@
-import { Github, Linkedin } from "lucide-react";
+import { Github, Linkedin, Award } from "lucide-react";
 import { SOCIAL_LINKS } from "@/lib/constants";
 
 export function AuthorCard() {
@@ -23,12 +23,24 @@ export function AuthorCard() {
             come from shipping systems in the real world. The goal is simple: make complex
             implementation details feel approachable and useful.
           </p>
-          <div className="mt-6 flex items-center justify-center gap-4 sm:justify-start">
-            <a href={SOCIAL_LINKS.github} target="_blank" rel="noopener noreferrer" className="rounded-full border border-border bg-background/80 p-2 text-textMuted transition-colors hover:bg-surface hover:text-textPrimary">
-              <Github className="w-4 h-4" />
-            </a>
-            <a href={SOCIAL_LINKS.linkedin} target="_blank" rel="noopener noreferrer" className="rounded-full border border-border bg-background/80 p-2 text-textMuted transition-colors hover:bg-surface hover:text-primary">
-              <Linkedin className="w-4 h-4" />
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-4 sm:justify-start">
+            <div className="flex items-center gap-4">
+              <a href={SOCIAL_LINKS.github} target="_blank" rel="noopener noreferrer" className="rounded-full border border-border bg-background/80 p-2 text-textMuted transition-colors hover:bg-surface hover:text-textPrimary">
+                <Github className="w-4 h-4" />
+              </a>
+              <a href={SOCIAL_LINKS.linkedin} target="_blank" rel="noopener noreferrer" className="rounded-full border border-border bg-background/80 p-2 text-textMuted transition-colors hover:bg-surface hover:text-primary">
+                <Linkedin className="w-4 h-4" />
+              </a>
+            </div>
+            
+            <a 
+              href="https://www.credly.com/users/rabin-mishra/badges#credly" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="flex items-center gap-2 rounded-full border border-border bg-background/80 px-3 py-1.5 text-xs font-medium text-textMuted transition-colors hover:border-primary/30 hover:bg-primary/5 hover:text-primary sm:ml-auto"
+            >
+              <Award className="h-3.5 w-3.5" />
+              <span>Credly Verified</span>
             </a>
           </div>
         </div>
