@@ -26,14 +26,25 @@ export function CertificationsSectionClient({ certs }: { certs: SanityCertificat
   return (
     <section className="py-20 bg-surface-2 border-t border-border">
       <div className="container mx-auto px-4 md:px-8">
-        <div className="mb-12">
-          <h2 className="text-3xl font-bold mb-4 flex items-center gap-3">
-            <Award className="w-8 h-8 text-primary" />
-            Certifications ({certs.length}+)
-          </h2>
-          <p className="text-textMuted max-w-2xl">
-            Continuous learning is part of the job. Validated skills across multiple platforms.
-          </p>
+        <div className="mb-12 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end">
+          <div>
+            <h2 className="text-3xl font-bold mb-4 flex items-center gap-3">
+              <Award className="w-8 h-8 text-primary" />
+              Certifications ({certs.length}+)
+            </h2>
+            <p className="text-textMuted max-w-2xl">
+              Continuous learning is part of the job. Validated skills across multiple platforms.
+            </p>
+          </div>
+          <a 
+            href="https://www.credly.com/users/rabin-mishra/badges#credly" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="flex shrink-0 items-center gap-2 rounded-full border border-border bg-background/80 px-4 py-2 text-sm font-medium text-textMuted transition-colors hover:border-primary/30 hover:bg-primary/5 hover:text-primary"
+          >
+            <Award className="h-4 w-4" />
+            <span>Credly Verified Profile</span>
+          </a>
         </div>
 
         {/* Tabs */}
