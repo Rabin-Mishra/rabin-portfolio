@@ -100,9 +100,9 @@ export default async function BlogPostPage({ params }: Props) {
       />
       <div className="mx-auto max-w-[1500px] px-4 py-10 md:px-8 md:py-14">
         <div
-          className={`grid gap-12 ${
+          className={`grid gap-10 lg:gap-14 ${
             hasTableOfContents
-              ? "xl:grid-cols-[minmax(0,1fr)_280px] xl:items-start"
+              ? "xl:grid-cols-[minmax(0,1fr)_300px] xl:items-start"
               : ""
           }`}
         >
@@ -177,7 +177,7 @@ export default async function BlogPostPage({ params }: Props) {
             </div>
 
             {post.tags && post.tags.length > 0 && (
-              <div className="mx-auto mt-14 flex max-w-[72ch] flex-wrap gap-2 border-t border-border pt-8">
+              <div className="mx-auto mt-14 flex max-w-3xl flex-wrap gap-2 border-t border-border pt-8 px-4 sm:px-6 lg:px-0">
                 <span className="mr-2 py-1 text-sm font-medium text-textMuted">
                   Tags:
                 </span>

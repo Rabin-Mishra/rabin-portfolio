@@ -10,7 +10,7 @@ export function PortableTextRenderer({ value }: { value: PortableTextValue }) {
 
   if (htmlDocument) {
     return (
-      <div className="article-body">
+      <div className="article-body mx-auto max-w-3xl px-4 sm:px-6 lg:px-0">
         <HtmlDocumentEmbed html={htmlDocument} title="Embedded HTML article" />
       </div>
     );
@@ -19,7 +19,7 @@ export function PortableTextRenderer({ value }: { value: PortableTextValue }) {
   if (typeof value === "string") {
     if (looksLikeMarkdown(value)) {
       return (
-        <div className="article-body">
+        <div className="article-body mx-auto max-w-3xl px-4 sm:px-6 lg:px-0">
           <PortableText
             value={markdownToPortableText(value)}
             components={portableTextComponents}
@@ -29,7 +29,7 @@ export function PortableTextRenderer({ value }: { value: PortableTextValue }) {
     }
 
     return (
-      <div className="article-body">
+      <div className="article-body mx-auto max-w-3xl px-4 sm:px-6 lg:px-0">
         <p className="mb-4 whitespace-pre-wrap leading-7 text-textPrimary">
           {value}
         </p>
@@ -42,7 +42,7 @@ export function PortableTextRenderer({ value }: { value: PortableTextValue }) {
   }
 
   return (
-    <div className="article-body">
+    <div className="article-body mx-auto max-w-3xl px-4 sm:px-6 lg:px-0">
       <PortableText value={value} components={portableTextComponents} />
     </div>
   );

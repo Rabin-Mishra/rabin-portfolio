@@ -52,8 +52,8 @@ function PortableImage({ value }: { value: PortableTextImageBlock }) {
   }
 
   return (
-    <div className="not-prose my-8">
-      <figure className="mx-auto max-w-3xl">
+    <div className="not-prose my-10">
+      <figure className="mx-auto">
         <Image
           src={imageUrl}
           alt={alt}
@@ -123,7 +123,7 @@ function PortableTable({ value }: { value: PortableTextTableBlock }) {
 export const portableTextComponents: Partial<PortableTextReactComponents> = {
   block: {
     normal: ({ children }) => (
-      <p className="mb-6 text-[1.12rem] leading-8 text-textPrimary/90">
+      <p className="mb-7 text-lg leading-[1.8] text-textPrimary/90">
         {children}
       </p>
     ),
@@ -131,7 +131,7 @@ export const portableTextComponents: Partial<PortableTextReactComponents> = {
       <Heading
         as="h1"
         value={value}
-        className="font-editorial mb-6 mt-14 text-4xl font-semibold tracking-[-0.03em] md:text-5xl"
+        className="font-editorial mb-8 mt-16 text-4xl font-semibold tracking-[-0.03em] md:text-5xl"
       >
         {children}
       </Heading>
@@ -140,7 +140,7 @@ export const portableTextComponents: Partial<PortableTextReactComponents> = {
       <Heading
         as="h2"
         value={value}
-        className="font-editorial mb-4 mt-14 text-3xl font-semibold tracking-[-0.03em] md:text-[2.15rem]"
+        className="font-editorial mb-5 mt-16 text-3xl font-semibold tracking-[-0.03em] md:text-[2.15rem]"
       >
         {children}
       </Heading>
@@ -149,7 +149,7 @@ export const portableTextComponents: Partial<PortableTextReactComponents> = {
       <Heading
         as="h3"
         value={value}
-        className="font-editorial mb-3 mt-10 text-2xl font-semibold tracking-[-0.02em]"
+        className="font-editorial mb-4 mt-12 text-2xl font-semibold tracking-[-0.02em]"
       >
         {children}
       </Heading>
@@ -164,19 +164,19 @@ export const portableTextComponents: Partial<PortableTextReactComponents> = {
       </Heading>
     ),
     blockquote: ({ children }) => (
-      <blockquote className="my-10 rounded-[24px] border border-border/70 bg-surface px-6 py-6 text-[1.08rem] italic leading-8 text-textMuted shadow-[0_18px_44px_-36px_rgba(15,23,42,0.45)]">
+      <blockquote className="my-10 rounded-r-[24px] border-l-4 border-primary/50 bg-surface px-6 py-6 text-lg italic leading-8 text-textMuted shadow-[0_18px_44px_-36px_rgba(15,23,42,0.3)]">
         {children}
       </blockquote>
     ),
   },
   list: {
     bullet: ({ children }) => (
-      <ul className="mb-8 list-disc space-y-3 pl-6 text-[1.08rem] leading-8 text-textPrimary/90 marker:text-primary">
+      <ul className="mb-8 list-disc space-y-3 pl-6 text-lg leading-[1.8] text-textPrimary/90 marker:text-primary">
         {children}
       </ul>
     ),
     number: ({ children }) => (
-      <ol className="mb-8 list-decimal space-y-3 pl-6 text-[1.08rem] leading-8 text-textPrimary/90 marker:font-semibold marker:text-primary">
+      <ol className="mb-8 list-decimal space-y-3 pl-6 text-lg leading-[1.8] text-textPrimary/90 marker:font-semibold marker:text-primary">
         {children}
       </ol>
     ),
