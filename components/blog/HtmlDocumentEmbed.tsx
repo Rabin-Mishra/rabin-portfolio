@@ -63,6 +63,42 @@ export function HtmlDocumentEmbed({
       );
     };
 
+    const handleLinkClick = (e: Event) => {
+      const target = e.target as HTMLElement;
+      const anchor = target.closest("a");
+
+      if (anchor && anchor.hash && anchor.hash.startsWith("#")) {
+        const doc = iframe.contentDocument;
+        const id = anchor.hash.substring(1);
+        
+        let el = doc?.getElementById(id);
+        if (!el && id) {
+          try {
+            el = doc?.querySelector(`[name="${id}"]`);
+          } catch {
+            // Ignore invalid selector
+          }
+        }
+
+        if (el) {
+          e.preventDefault();
+
+          const iframeRect = iframe.getBoundingClientRect();
+          const elRect = el.getBoundingClientRect();
+          const SCROLL_OFFSET = 100; // Same offset as TableOfContents
+
+          const top = iframeRect.top + window.scrollY + elRect.top - SCROLL_OFFSET;
+
+          window.scrollTo({
+            top,
+            behavior: "smooth",
+          });
+
+          window.history.pushState(null, "", anchor.hash);
+        }
+      }
+    };
+
     const handleLoad = () => {
       updateHeight();
 
@@ -101,6 +137,10 @@ export function HtmlDocumentEmbed({
 
       void doc.fonts?.ready.then(updateHeight).catch(() => {});
 
+      // Intercept internal link clicks to scroll the parent window
+      doc.removeEventListener("click", handleLinkClick);
+      doc.addEventListener("click", handleLinkClick);
+
       frameWindow?.removeEventListener("resize", updateHeight);
       frameWindow = iframe.contentWindow;
       frameWindow?.addEventListener("resize", updateHeight);
@@ -123,6 +163,8 @@ export function HtmlDocumentEmbed({
         if (!doc) {
           return;
         }
+
+        doc.removeEventListener("click", handleLinkClick);
 
         for (const image of Array.from(doc.images ?? [])) {
           image.removeEventListener("load", updateHeight);
