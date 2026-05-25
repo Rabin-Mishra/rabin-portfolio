@@ -1,10 +1,11 @@
 import { Metadata } from "next";
 import { Suspense } from "react";
 import { client } from "@/sanity/lib/client";
-import { SanityPost } from "@/lib/types";
+import { SanityPost, SanitySiteConfig } from "@/lib/types";
 import { BlogSearch } from "@/components/blog/BlogSearch";
 import { CategoryFilter } from "@/components/blog/CategoryFilter";
 import { BlogList } from "@/components/blog/BlogList";
+import { getSiteConfig } from "@/sanity/lib/queries";
 
 export const metadata: Metadata = {
   title: "DevOps & Cloud Blog | Rabin Mishra",
@@ -17,22 +18,27 @@ const getAllPostsQuery = `*[_type == "post"] | order(publishedAt desc) {
 }`;
 
 export default async function BlogPage() {
-  const posts = await client.fetch<SanityPost[]>(getAllPostsQuery);
+  const [posts, config] = await Promise.all([
+    client.fetch<SanityPost[]>(getAllPostsQuery),
+    client.fetch<SanitySiteConfig | null>(getSiteConfig),
+  ]);
+
+  const blogTitle = config?.blogTitle ?? "Essays on cloud systems, automation, and the craft behind reliable delivery.";
+  const blogDescription = config?.blogDescription ?? "Practical DevOps notes, infrastructure breakdowns, and build logs from real projects, shaped into articles that are easier to read and revisit.";
 
   return (
     <div className="mx-auto max-w-[1500px] px-4 py-12 md:px-8 lg:py-20">
-      <section className="mb-10 overflow-hidden rounded-[32px] border border-border/70 bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.14),transparent_34%),linear-gradient(180deg,rgba(248,250,252,0.9),rgba(255,255,255,0.82))] px-6 py-8 shadow-[0_28px_90px_-60px_rgba(15,23,42,0.45)] dark:bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.16),transparent_34%),linear-gradient(180deg,rgba(17,17,17,0.96),rgba(10,10,10,0.92))] md:px-10 md:py-10">
+      <section className="mb-10 overflow-hidden rounded-[32px] border border-border/70 bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.14),transparent_34%),linear-gradient(180deg,rgba(248,250,252,0.9),rgba(255,255,255,0.82))] px-6 py-8 shadow-[0_28px_90px_-60px_rgba(15,23,42,0.45)] md:px-10 md:py-10">
         <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_280px] lg:items-end">
           <div className="max-w-4xl">
             <p className="mb-3 text-xs font-semibold uppercase tracking-[0.28em] text-textMuted">
               Publication
             </p>
             <h1 className="font-editorial text-4xl font-semibold tracking-[-0.04em] text-textPrimary md:text-6xl">
-              Essays on cloud systems, automation, and the craft behind reliable delivery.
+              {blogTitle}
             </h1>
             <p className="mt-5 max-w-2xl text-base leading-8 text-textMuted md:text-lg">
-              Practical DevOps notes, infrastructure breakdowns, and build logs from real projects,
-              shaped into articles that are easier to read and revisit.
+              {blogDescription}
             </p>
           </div>
 

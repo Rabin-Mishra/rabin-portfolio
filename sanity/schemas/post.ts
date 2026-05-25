@@ -40,7 +40,7 @@ export default defineType({
       name: "category",
       title: "Category",
       type: "reference",
-      to: { type: "category" },
+      to: [{ type: "category" }],
       validation: (Rule) => Rule.required(),
     }),
     defineField({
@@ -64,7 +64,28 @@ export default defineType({
       components: {
         input: MarkdownNoticeInput,
       },
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) =>
+        Rule.custom((value, context) => {
+          const document = context.document;
+          // If an HTML file is uploaded, the body is optional
+          if (document?.htmlFile) {
+            return true;
+          }
+          // Otherwise, it is required
+          if (!value || (Array.isArray(value) && value.length === 0)) {
+            return "Body content is required unless an HTML file is uploaded.";
+          }
+          return true;
+        }),
+    }),
+    defineField({
+      name: "htmlFile",
+      title: "HTML File Upload",
+      type: "file",
+      description: "Upload an HTML file directly instead of pasting it into the body. If uploaded, this HTML will be rendered as a full-width embedded page.",
+      options: {
+        accept: ".html",
+      },
     }),
     defineField({
       name: "readTime",

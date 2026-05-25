@@ -4,8 +4,8 @@ import { TechStackSection } from "@/components/home/TechStackSection";
 import { FeaturedProjectsSection } from "@/components/home/FeaturedProjectsSection";
 import { LatestPostsSection } from "@/components/home/LatestPostsSection";
 import { client } from "@/sanity/lib/client";
-import { getSiteConfig } from "@/sanity/lib/queries";
-import { SanitySiteConfig } from "@/lib/types";
+import { getSiteConfig, getSkills } from "@/sanity/lib/queries";
+import { SanitySiteConfig, SanitySkill } from "@/lib/types";
 
 export const metadata = {
   title: "Rabin Mishra | DevOps Engineer Portfolio",
@@ -13,13 +13,16 @@ export const metadata = {
 };
 
 export default async function HomePage() {
-  const config = await client.fetch<SanitySiteConfig | null>(getSiteConfig);
+  const [config, skills] = await Promise.all([
+    client.fetch<SanitySiteConfig | null>(getSiteConfig),
+    client.fetch<SanitySkill[] | null>(getSkills),
+  ]);
 
   return (
     <>
-      <HeroSection resumeUrl={config?.resumeFileUrl} />
-      <StatsBar />
-      <TechStackSection />
+      <HeroSection config={config} resumeUrl={config?.resumeFileUrl} />
+      <StatsBar stats={config?.stats} />
+      <TechStackSection skills={skills} />
       <FeaturedProjectsSection />
       <LatestPostsSection />
     </>

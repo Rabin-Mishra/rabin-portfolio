@@ -182,7 +182,7 @@ export function HtmlDocumentEmbed({
         title={title}
         srcDoc={html}
         loading="lazy"
-        sandbox="allow-same-origin"
+        sandbox="allow-same-origin allow-scripts"
         scrolling="no"
         className="block w-full border-0 bg-transparent"
         style={{ height }}

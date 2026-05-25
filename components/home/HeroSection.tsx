@@ -35,6 +35,8 @@ const LinkedinIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
+import { SanitySiteConfig } from "@/lib/types";
+
 const ROLES = [
   "Aspiring DevOps Engineer",
   "Cloud Infrastructure Builder",
@@ -58,17 +60,27 @@ const CODE_LINES = [
 ];
 
 interface HeroSectionProps {
+  config?: SanitySiteConfig | null;
   resumeUrl?: string;
 }
 
-export function HeroSection({ resumeUrl }: HeroSectionProps) {
+export function HeroSection({ config, resumeUrl }: HeroSectionProps) {
+  const roles = config?.roles && config.roles.length > 0 ? config.roles : ROLES;
+  const terminalLinesConfig = config?.terminalLines && config.terminalLines.length > 0 ? config.terminalLines : CODE_LINES;
+  const ownerName = config?.ownerName ?? "Rabin Mishra";
+  const shortBio = config?.shortBio ?? "Fresh BE IT graduate from Pokhara University, passionate about automating infrastructure and cloud systems. Based in Kathmandu, Nepal.";
+  const activeResumeUrl = config?.resumeFileUrl ?? resumeUrl;
+  const githubUrl = config?.githubUrl ?? SOCIAL_LINKS.github;
+  const linkedinUrl = config?.linkedinUrl ?? SOCIAL_LINKS.linkedin;
+  const email = config?.email ?? SOCIAL_LINKS.email;
+
   const [roleIndex, setRoleIndex] = useState(0);
   const [displayedText, setDisplayedText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
 
   // Typing effect
   useEffect(() => {
-    const currentRole = ROLES[roleIndex];
+    const currentRole = roles[roleIndex % roles.length];
     let typingSpeed = isDeleting ? 40 : 100;
 
     if (!isDeleting && displayedText === currentRole) {
@@ -77,7 +89,7 @@ export function HeroSection({ resumeUrl }: HeroSectionProps) {
       return () => clearTimeout(timeout);
     } else if (isDeleting && displayedText === "") {
       setIsDeleting(false);
-      setRoleIndex((prev) => (prev + 1) % ROLES.length);
+      setRoleIndex((prev) => (prev + 1) % roles.length);
       return;
     }
 
@@ -86,7 +98,7 @@ export function HeroSection({ resumeUrl }: HeroSectionProps) {
     }, typingSpeed);
 
     return () => clearTimeout(timeout);
-  }, [displayedText, isDeleting, roleIndex]);
+  }, [displayedText, isDeleting, roleIndex, roles]);
 
   // Terminal effect
   const [terminalLines, setTerminalLines] = useState<string[]>([]);
@@ -94,15 +106,15 @@ export function HeroSection({ resumeUrl }: HeroSectionProps) {
   useEffect(() => {
     let currentLine = 0;
     const interval = setInterval(() => {
-      if (currentLine <= CODE_LINES.length) {
-        setTerminalLines(CODE_LINES.slice(0, currentLine));
+      if (currentLine <= terminalLinesConfig.length) {
+        setTerminalLines(terminalLinesConfig.slice(0, currentLine));
         currentLine++;
       } else {
         clearInterval(interval);
       }
     }, 500);
     return () => clearInterval(interval);
-  }, []);
+  }, [terminalLinesConfig]);
 
   return (
     <section className="relative min-h-[calc(100vh-4rem)] flex items-center overflow-hidden py-20 lg:py-0">
@@ -121,7 +133,7 @@ export function HeroSection({ resumeUrl }: HeroSectionProps) {
           <div>
             <p className="text-textMuted text-lg mb-2 font-mono">Hi, I&apos;m</p>
             <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-4 text-textPrimary">
-              Rabin Mishra
+              {ownerName}
             </h1>
             <div className="h-10 sm:h-12 flex items-center">
               <span className="text-2xl sm:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">
@@ -132,7 +144,7 @@ export function HeroSection({ resumeUrl }: HeroSectionProps) {
           </div>
 
           <p className="text-lg text-textMuted max-w-lg leading-relaxed">
-            Fresh BE IT graduate from Pokhara University, passionate about automating infrastructure and cloud systems. Based in Kathmandu, Nepal.
+            {shortBio}
           </p>
 
           <div className="flex flex-wrap items-center gap-4 pt-4">
@@ -142,7 +154,7 @@ export function HeroSection({ resumeUrl }: HeroSectionProps) {
             <Button asChild variant="outline" size="lg" className="rounded-full bg-surface/50 backdrop-blur-sm">
               <Link href="/blog">Read My Blog</Link>
             </Button>
-            {resumeUrl && (
+            {activeResumeUrl && (
               <Button
                 asChild
                 variant="outline"
@@ -150,8 +162,8 @@ export function HeroSection({ resumeUrl }: HeroSectionProps) {
                 className="rounded-full bg-surface/50 backdrop-blur-sm border-primary/30 hover:border-primary hover:bg-primary/10 transition-all duration-300 group"
               >
                 <a
-                  href={`${resumeUrl}?dl=ResumeRabin.pdf`}
-                  download
+                  href={`${activeResumeUrl}?dl=Rabin_Mishra_CV.pdf`}
+                  download="Rabin_Mishra_CV.pdf"
                   rel="noopener noreferrer"
                 >
                   <FileDown className="w-4 h-4 mr-2 group-hover:animate-bounce" />
@@ -162,13 +174,13 @@ export function HeroSection({ resumeUrl }: HeroSectionProps) {
           </div>
 
           <div className="flex items-center gap-5 pt-8">
-            <a href={SOCIAL_LINKS.github} target="_blank" rel="noopener noreferrer" className="text-textMuted hover:text-primary transition-colors hover:scale-110 transform">
+            <a href={githubUrl} target="_blank" rel="noopener noreferrer" className="text-textMuted hover:text-primary transition-colors hover:scale-110 transform">
               <GithubIcon className="w-6 h-6" />
             </a>
-            <a href={SOCIAL_LINKS.linkedin} target="_blank" rel="noopener noreferrer" className="text-textMuted hover:text-primary transition-colors hover:scale-110 transform">
+            <a href={linkedinUrl} target="_blank" rel="noopener noreferrer" className="text-textMuted hover:text-primary transition-colors hover:scale-110 transform">
               <LinkedinIcon className="w-6 h-6" />
             </a>
-            <a href={`mailto:${SOCIAL_LINKS.email}`} className="text-textMuted hover:text-primary transition-colors hover:scale-110 transform">
+            <a href={`mailto:${email}`} className="text-textMuted hover:text-primary transition-colors hover:scale-110 transform">
               <Mail className="w-6 h-6" />
             </a>
           </div>

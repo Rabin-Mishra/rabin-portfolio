@@ -2,7 +2,7 @@ import { PortableText } from "@portabletext/react";
 import { portableTextComponents } from "./PortableTextComponents";
 import type { PortableTextValue } from "@/lib/portableText";
 import { looksLikeMarkdown, markdownToPortableText } from "@/lib/markdown";
-import { extractPortableTextHtmlDocument } from "@/lib/portableText";
+import { extractPortableTextHtmlDocument, looksLikeHtml } from "@/lib/portableText";
 import { HtmlDocumentEmbed } from "./HtmlDocumentEmbed";
 
 export function PortableTextRenderer({ value }: { value: PortableTextValue }) {
@@ -18,6 +18,15 @@ export function PortableTextRenderer({ value }: { value: PortableTextValue }) {
   }
 
   if (typeof value === "string") {
+    if (looksLikeHtml(value)) {
+      return (
+        <div
+          className="article-body mx-auto max-w-3xl px-4 sm:px-6 lg:px-0"
+          dangerouslySetInnerHTML={{ __html: value }}
+        />
+      );
+    }
+
     if (looksLikeMarkdown(value)) {
       return (
         <div className="article-body mx-auto max-w-3xl px-4 sm:px-6 lg:px-0">

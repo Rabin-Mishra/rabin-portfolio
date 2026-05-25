@@ -12,6 +12,7 @@ import {
 } from "@/lib/portableText";
 import { formatDate } from "@/lib/utils";
 import { PortableTextRenderer } from "@/components/blog/PortableTextRenderer";
+import { HtmlDocumentEmbed } from "@/components/blog/HtmlDocumentEmbed";
 import { TableOfContents } from "@/components/blog/TableOfContents";
 import { ShareButtons } from "@/components/blog/ShareButtons";
 import { AuthorCard } from "@/components/blog/AuthorCard";
@@ -20,7 +21,7 @@ import { Badge } from "@/components/ui/Badge";
 import Link from "next/link";
 import { SITE_CONFIG } from "@/lib/constants";
 
-export const revalidate = 3600; // ISR 1 hour
+export const dynamic = "force-dynamic";
 
 export async function generateStaticParams() {
   const slugs = await client.fetch<string[]>(`*[_type == "post"].slug.current`);
@@ -60,9 +61,17 @@ export default async function BlogPostPage({ params }: Props) {
   if (!post) {
     notFound();
   }
-
   const headings = extractPortableTextHeadings(post.body);
-  const htmlDocument = extractPortableTextHtmlDocument(post.body);
+  let htmlDocument = extractPortableTextHtmlDocument(post.body);
+
+  if (post.htmlFileUrl) {
+    try {
+      htmlDocument = await fetch(post.htmlFileUrl).then((res) => res.text());
+    } catch (err) {
+      console.error("Failed to fetch uploaded HTML file:", err);
+    }
+  }
+
   const hasTableOfContents = !htmlDocument && headings.length > 0;
   const postUrl = `${SITE_CONFIG.url}/blog/${post.slug}`;
 
@@ -107,7 +116,7 @@ export default async function BlogPostPage({ params }: Props) {
           }`}
         >
           <article className="min-w-0">
-            <header className="mb-12 overflow-hidden rounded-[34px] border border-border/70 bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.12),transparent_34%),linear-gradient(180deg,rgba(248,250,252,0.96),rgba(255,255,255,0.88))] shadow-[0_30px_90px_-60px_rgba(15,23,42,0.45)] dark:bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.14),transparent_34%),linear-gradient(180deg,rgba(17,17,17,0.98),rgba(10,10,10,0.92))]">
+            <header className="mb-12 overflow-hidden rounded-[34px] border border-border/70 bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.12),transparent_34%),linear-gradient(180deg,rgba(248,250,252,0.96),rgba(255,255,255,0.88))] shadow-[0_30px_90px_-60px_rgba(15,23,42,0.45)]">
               <div className="px-6 py-8 md:px-10 md:py-10">
                 <div className="mb-6 flex items-center gap-2 text-sm font-medium text-textMuted">
               <Link href="/blog" className="hover:text-primary transition-colors">
@@ -173,7 +182,11 @@ export default async function BlogPostPage({ params }: Props) {
             </header>
 
             <div className="w-full">
-              <PortableTextRenderer value={post.body} />
+              {htmlDocument ? (
+                <HtmlDocumentEmbed html={htmlDocument} title="Embedded HTML article" />
+              ) : (
+                <PortableTextRenderer value={post.body} />
+              )}
             </div>
 
             {post.tags && post.tags.length > 0 && (

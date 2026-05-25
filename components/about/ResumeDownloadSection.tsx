@@ -42,8 +42,8 @@ export function ResumeDownloadSection({ resumeUrl }: ResumeDownloadSectionProps)
                 className="rounded-full shadow-lg shadow-primary/25 group/btn"
               >
                 <a
-                  href={`${resumeUrl}?dl=ResumeRabin.pdf`}
-                  download
+                  href={`${resumeUrl}?dl=Rabin_Mishra_CV.pdf`}
+                  download="Rabin_Mishra_CV.pdf"
                   rel="noopener noreferrer"
                 >
                   <FileDown className="w-5 h-5 mr-2 group-hover/btn:animate-bounce" />

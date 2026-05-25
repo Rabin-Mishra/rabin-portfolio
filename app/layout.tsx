@@ -1,9 +1,6 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
-import { ThemeProvider } from '@/components/layout/ThemeProvider';
-import { Navbar } from '@/components/layout/Navbar';
-import { Footer } from '@/components/layout/Footer';
 import { Analytics } from '@vercel/analytics/react';
 import { client } from '@/sanity/lib/client';
 import { getSiteConfig } from '@/sanity/lib/queries';
@@ -75,20 +72,9 @@ export default async function RootLayout({
   };
 
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en">
       <body className={`${inter.variable} min-h-screen flex flex-col bg-background text-textPrimary antialiased`}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem={false}
-          disableTransitionOnChange
-        >
-          <Navbar config={safeConfig} />
-          <main className="flex-1 pt-16">
-            {children}
-          </main>
-          <Footer config={safeConfig} />
-        </ThemeProvider>
+        {children}
         <Analytics />
         <script
           type="application/ld+json"

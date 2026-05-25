@@ -61,11 +61,18 @@ export interface PortableTextImageBlock {
   dimensions?: PortableTextImageDimensions;
 }
 
+export interface PortableTextHtmlBlock {
+  _key?: string;
+  _type: "html";
+  html?: string;
+}
+
 export type PortableTextNode =
   | PortableTextBlock
   | PortableTextCodeBlock
   | PortableTextImageBlock
-  | PortableTextTableBlock;
+  | PortableTextTableBlock
+  | PortableTextHtmlBlock;
 
 export type PortableTextValue = PortableTextNode[] | string | null | undefined;
 
@@ -138,6 +145,10 @@ function getPortableTextSourceText(body: PortableTextValue): string {
           .join("\n");
       }
 
+      if (node._type === "html") {
+        return node.html ?? "";
+      }
+
       return "";
     })
     .filter(Boolean)
@@ -153,9 +164,19 @@ export function looksLikeHtmlDocument(value: string): boolean {
   }
 
   return (
-    /^<!doctype\s+html/i.test(trimmedValue) ||
+    /^<!doctype\s*html/i.test(trimmedValue) ||
     (/<html[\s>]/i.test(trimmedValue) && /<body[\s>]/i.test(trimmedValue))
   );
+}
+
+export function looksLikeHtml(value: string): boolean {
+  const trimmedValue = value.trim();
+
+  if (!trimmedValue) {
+    return false;
+  }
+
+  return /<[a-z][\s\S]*>/i.test(trimmedValue);
 }
 
 export function extractPortableTextHtmlDocument(

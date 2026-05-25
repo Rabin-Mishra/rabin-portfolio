@@ -17,7 +17,7 @@ export default async function AboutPage() {
 
   return (
     <>
-      <AboutHero />
+      <AboutHero config={config} />
       <SkillsGrid />
       <EducationTimeline />
       <CertificationsSection />

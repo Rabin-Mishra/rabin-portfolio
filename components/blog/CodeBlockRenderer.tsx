@@ -35,18 +35,12 @@ async function highlightCode(code: string, language?: string) {
   try {
     return await codeToHtml(code, {
       lang: normalizedLanguage,
-      themes: {
-        light: "github-light",
-        dark: "github-dark-default",
-      },
+      theme: "github-light",
     });
   } catch {
     return codeToHtml(code, {
       lang: "text",
-      themes: {
-        light: "github-light",
-        dark: "github-dark-default",
-      },
+      theme: "github-light",
     });
   }
 }
@@ -66,8 +60,8 @@ export async function CodeBlockRenderer({
 
   return (
     <div className="not-prose my-8 overflow-hidden rounded-2xl border border-border bg-background shadow-lg">
-      <div className="flex items-center justify-between border-b border-border bg-slate-100/90 px-4 py-3 dark:bg-slate-900/90">
-        <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.24em] text-slate-600 dark:text-slate-300">
+      <div className="flex items-center justify-between border-b border-border bg-slate-100/90 px-4 py-3">
+        <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.24em] text-slate-600">
           {label}
         </span>
         <CodeCopyButton code={trimmedCode} />

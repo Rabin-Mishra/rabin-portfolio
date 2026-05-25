@@ -2,8 +2,14 @@
 
 import { motion } from "framer-motion";
 import { SKILLS } from "@/lib/constants";
+import { SanitySkill } from "@/lib/types";
 
-export function TechStackSection() {
+interface TechStackSectionProps {
+  skills?: SanitySkill[] | null;
+}
+
+export function TechStackSection({ skills }: TechStackSectionProps) {
+  const activeSkills = skills && skills.length > 0 ? skills : SKILLS;
   return (
     <section className="py-24 bg-surface border-y border-border">
       <div className="container mx-auto px-4 md:px-8">
@@ -20,7 +26,7 @@ export function TechStackSection() {
         </motion.div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-          {SKILLS.map((skill, index) => (
+          {activeSkills.map((skill, index) => (
             <motion.div
               key={skill.name}
               initial={{ opacity: 0, y: 20 }}
@@ -31,7 +37,7 @@ export function TechStackSection() {
             >
               <div className="w-12 h-12 mb-4 flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
                 <img
-                  src={skill.iconUrl || `https://cdn.simpleicons.org/${skill.icon}`}
+                  src={("iconUrl" in skill && skill.iconUrl) || `https://cdn.simpleicons.org/${skill.icon}`}
                   alt={skill.name}
                   width={32}
                   height={32}

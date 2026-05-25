@@ -41,8 +41,8 @@ export function CodeCopyButton({ code }: CodeCopyButtonProps) {
       size="sm"
       onClick={handleCopy}
       className={cn(
-        "h-8 gap-2 rounded-md px-2.5 font-mono text-xs text-slate-600 hover:bg-slate-200 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white",
-        copied && "text-emerald-600 dark:text-emerald-400"
+        "h-8 gap-2 rounded-md px-2.5 font-mono text-xs text-slate-600 hover:bg-slate-200 hover:text-slate-900",
+        copied && "text-emerald-600"
       )}
       aria-label={copied ? "Code copied" : "Copy code to clipboard"}
     >

@@ -7,7 +7,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Linkedin } from "lucide-react";
 import { NAV_ITEMS } from "@/lib/constants";
 import { cn } from "@/lib/utils";
-import { ThemeToggle } from "./ThemeToggle";
 import { Button } from "@/components/ui/Button";
 import { SanitySiteConfig } from "@/lib/types";
 
@@ -85,7 +84,6 @@ export function Navbar({ config }: { config: SanitySiteConfig }) {
               })}
             </ul>
             <div className="flex items-center gap-2 border-l border-border pl-6">
-              <ThemeToggle />
               <Button variant="ghost" size="sm" asChild className="w-10 h-10 px-0 relative group">
                 {config.githubUrl && (
                   <a href={config.githubUrl} target="_blank" rel="noopener noreferrer" aria-label="GitHub">
@@ -103,7 +101,6 @@ export function Navbar({ config }: { config: SanitySiteConfig }) {
 
           {/* Mobile Toggle */}
           <div className="flex items-center gap-2 md:hidden">
-            <ThemeToggle />
             <Button
               variant="ghost"
               size="sm"

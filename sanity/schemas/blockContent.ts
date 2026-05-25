@@ -178,5 +178,30 @@ export default defineType({
         },
       },
     }),
+    defineArrayMember({
+      name: "html",
+      title: "HTML Block",
+      type: "object",
+      fields: [
+        defineField({
+          name: "html",
+          title: "HTML Code",
+          type: "text",
+          rows: 10,
+          validation: (Rule) => Rule.required(),
+        }),
+      ],
+      preview: {
+        select: {
+          html: "html",
+        },
+        prepare({ html }: { html?: string }) {
+          return {
+            title: "HTML Block",
+            subtitle: html ? html.slice(0, 80) : "No HTML code yet",
+          };
+        },
+      },
+    }),
   ],
 });

@@ -3,7 +3,7 @@ import { SOCIAL_LINKS } from "@/lib/constants";
 
 export function AuthorCard() {
   return (
-    <div className="relative my-14 overflow-hidden rounded-[30px] border border-border/70 bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.12),transparent_38%),linear-gradient(180deg,rgba(248,250,252,0.95),rgba(241,245,249,0.92))] p-6 shadow-[0_24px_80px_-56px_rgba(15,23,42,0.45)] dark:bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.14),transparent_38%),linear-gradient(180deg,rgba(17,17,17,0.96),rgba(10,10,10,0.92))] md:p-8">
+    <div className="relative my-14 overflow-hidden rounded-[30px] border border-border/70 bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.12),transparent_38%),linear-gradient(180deg,rgba(248,250,252,0.95),rgba(241,245,249,0.92))] p-6 shadow-[0_24px_80px_-56px_rgba(15,23,42,0.45)] md:p-8">
       <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-start">
         <div className="relative flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-full border-2 border-primary/20 bg-background text-xl font-bold text-textMuted shadow-lg">
         RM

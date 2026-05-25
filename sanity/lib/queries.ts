@@ -63,6 +63,7 @@ export const getPostBySlug = groq`
       }
     },
     readTime,
+    "htmlFileUrl": htmlFile.asset->url,
     "relatedPosts": *[_type == "post" && _id != ^._id && category._ref == ^.category._ref] | order(publishedAt desc)[0...3] {
       "id": _id,
       title,
@@ -185,7 +186,16 @@ export const getSiteConfig = groq`
     metaDescription,
     profileImage,
     ogImage,
-    "resumeFileUrl": resumeFile.asset->url
+    "resumeFileUrl": resumeFile.asset->url,
+    roles,
+    terminalLines,
+    stats,
+    contactHeadline,
+    contactDescription,
+    projectsTitle,
+    projectsDescription,
+    blogTitle,
+    blogDescription
   }
 `;
 

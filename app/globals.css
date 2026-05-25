@@ -18,19 +18,6 @@
 
     --radius: 0.5rem;
   }
-
-  .dark {
-    --background: #0a0a0a;
-    --surface: #111111;
-    --surface-2: #1a1a1a;
-    --accent-blue: #3b82f6;
-    --accent-green: #10b981;
-    --primary: #3b82f6;
-    --secondary: #10b981;
-    --text-primary: #f1f5f9;
-    --text-muted: #94a3b8;
-    --border: #1e293b;
-  }
 }
 
 @layer base {

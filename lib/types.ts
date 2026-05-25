@@ -23,6 +23,7 @@ export interface SanityPost {
   tags: string[];
   publishedAt: string;
   body: PortableTextValue;
+  htmlFileUrl?: string;
   readTime: number;
   relatedPosts: SanityPost[];
 }
@@ -100,6 +101,12 @@ export interface SanitySkill {
   icon: string;
 }
 
+export interface SanityStat {
+  value: string;
+  suffix?: string;
+  label: string;
+}
+
 export interface SanitySiteConfig {
   _id: string;
   ownerName?: string;
@@ -116,6 +123,15 @@ export interface SanitySiteConfig {
   profileImage?: any;
   ogImage?: any;
   resumeFileUrl?: string;
+  roles?: string[];
+  terminalLines?: string[];
+  stats?: SanityStat[];
+  contactHeadline?: string;
+  contactDescription?: string;
+  projectsTitle?: string;
+  projectsDescription?: string;
+  blogTitle?: string;
+  blogDescription?: string;
 }
 
 export interface SanityWorkExperience {

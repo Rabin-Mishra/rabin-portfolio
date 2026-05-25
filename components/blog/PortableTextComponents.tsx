@@ -7,6 +7,7 @@ import {
   type PortableTextCodeBlock,
   type PortableTextImageBlock,
   type PortableTextTableBlock,
+  type PortableTextHtmlBlock,
 } from "@/lib/portableText";
 import { urlForImage } from "@/sanity/lib/image";
 
@@ -226,5 +227,14 @@ export const portableTextComponents: Partial<PortableTextReactComponents> = {
       );
     },
     table: ({ value }) => <PortableTable value={value as PortableTextTableBlock} />,
+    html: ({ value }) => {
+      const htmlBlock = value as PortableTextHtmlBlock;
+      return (
+        <div
+          className="my-6 w-full overflow-x-auto"
+          dangerouslySetInnerHTML={{ __html: htmlBlock.html ?? "" }}
+        />
+      );
+    },
   },
 };

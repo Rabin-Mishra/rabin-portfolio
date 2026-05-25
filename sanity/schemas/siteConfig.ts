@@ -81,5 +81,67 @@ export default defineType({
       type: "file",
       options: { accept: "application/pdf" },
     }),
+    defineField({
+      name: "roles",
+      title: "Hero Roles (Typing Animation)",
+      type: "array",
+      of: [{ type: "string" }],
+      description: "List of roles that animate on the Home page hero section. E.g. DevOps Engineer, Cloud Architect.",
+    }),
+    defineField({
+      name: "terminalLines",
+      title: "Hero Terminal Simulator Lines",
+      type: "array",
+      of: [{ type: "string" }],
+      description: "Lines of code or commands displayed sequentially in the home page code terminal simulation block.",
+    }),
+    defineField({
+      name: "stats",
+      title: "Homepage Stats Counters",
+      type: "array",
+      of: [
+        {
+          type: "object",
+          name: "statItem",
+          title: "Stat Item",
+          fields: [
+            { name: "value", title: "Number / Value", type: "string", description: "e.g. '12', '3.8'" },
+            { name: "suffix", title: "Suffix Symbol", type: "string", description: "e.g. '+', '/4.0'" },
+            { name: "label", title: "Label Description", type: "string", description: "e.g. 'Projects Completed'" },
+          ],
+        },
+      ],
+      description: "Interactive counter items displayed in the home page stats bar.",
+    }),
+    defineField({
+      name: "contactHeadline",
+      title: "Contact Page Headline",
+      type: "string",
+    }),
+    defineField({
+      name: "contactDescription",
+      title: "Contact Page Description",
+      type: "text",
+    }),
+    defineField({
+      name: "projectsTitle",
+      title: "Projects Page Title",
+      type: "string",
+    }),
+    defineField({
+      name: "projectsDescription",
+      title: "Projects Page Description",
+      type: "text",
+    }),
+    defineField({
+      name: "blogTitle",
+      title: "Blog Page Title",
+      type: "string",
+    }),
+    defineField({
+      name: "blogDescription",
+      title: "Blog Page Description",
+      type: "text",
+    }),
   ],
 });
