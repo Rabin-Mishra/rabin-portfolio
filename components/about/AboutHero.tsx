@@ -55,7 +55,7 @@ export function AboutHero({ config }: AboutHeroProps) {
               ) : (
                 <>
                   <p>
-                    I&apos;m Rabin Mishra, an IT Engineer and aspiring DevOps professional based in Kathmandu, Nepal. I recently completed my Bachelor of Engineering in Information Technology at Pokhara University with a 3.9 GPA.
+                    I&apos;m Rabin Mishra, an IT Engineer and aspiring MLOps professional based in Kathmandu, Nepal. I recently completed my Bachelor of Engineering in Information Technology at Pokhara University with a 3.9 CGPA.
                   </p>
                   <p>
                     I&apos;m passionate about building and automating cloud infrastructure, designing reliable CI/CD pipelines, and applying DevOps best practices to real-world systems. I&apos;m a registered engineer under the Nepal Engineering Council and actively building my skills across AWS, Docker, Terraform, Kubernetes, and Linux.

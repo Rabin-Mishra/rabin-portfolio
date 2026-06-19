@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Github, ArrowRight } from "lucide-react";
+import { Github, ArrowRight, PlayCircle } from "lucide-react";
 import { client } from "@/sanity/lib/client";
 import { getFeaturedProjects } from "@/sanity/lib/queries";
 import { urlForImage } from "@/sanity/lib/image";
@@ -23,10 +23,10 @@ export async function FeaturedProjectsSection() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {projects.map((project) => (
             <div key={project.id} className="group rounded-xl border border-border bg-surface overflow-hidden flex flex-col hover:border-primary/50 transition-colors">
-              <div className="aspect-video relative overflow-hidden bg-background border-b border-border">
+              <Link href={`/projects/${project.slug}`} className="aspect-video relative overflow-hidden bg-background border-b border-border block">
                 {project.coverImage ? (
                   <Image
                     src={urlForImage(project.coverImage).url()}
@@ -39,39 +39,47 @@ export async function FeaturedProjectsSection() {
                      RM
                   </div>
                 )}
-              </div>
-              <div className="p-6 flex flex-col flex-1">
-                <h3 className="text-xl font-bold mb-2 group-hover:text-primary transition-colors">
-                  {project.title}
+              </Link>
+              <div className="p-5 flex flex-col flex-1">
+                <h3 className="text-lg font-bold mb-2 hover:text-primary transition-colors line-clamp-2 min-h-[3rem] flex items-center">
+                  <Link href={`/projects/${project.slug}`}>
+                    {project.title}
+                  </Link>
                 </h3>
-                <p className="text-textMuted text-sm mb-6 flex-1 line-clamp-3">
+                <p className="text-textMuted text-xs mb-4 flex-1 line-clamp-3 leading-relaxed">
                   {project.description}
                 </p>
                 
-                <div className="flex flex-wrap gap-2 mb-6">
+                <div className="flex flex-wrap gap-1.5 mb-5">
                   {project.techStack?.slice(0, 4).map((tech) => (
-                    <Badge key={tech} variant="outline" className="bg-background">
+                    <Badge key={tech} variant="outline" className="bg-background text-[10px] py-0.5 px-2">
                       {tech}
                     </Badge>
                   ))}
                   {(project.techStack?.length ?? 0) > 4 && (
-                    <Badge variant="outline" className="bg-background text-textMuted">
+                    <Badge variant="outline" className="bg-background text-[10px] text-textMuted py-0.5 px-2">
                       +{project.techStack.length - 4}
                     </Badge>
                   )}
                 </div>
 
-                <div className="flex items-center gap-4 mt-auto pt-4 border-t border-border">
+                <div className="flex items-center gap-3 mt-auto pt-4 border-t border-border">
                   {project.githubUrl && (
-                    <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="text-textMuted hover:text-textPrimary transition-colors flex items-center gap-2 text-sm font-medium">
-                      <Github className="w-4 h-4" /> Code
+                    <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="p-2 bg-background hover:bg-surface border border-border rounded-full text-textMuted hover:text-primary transition-colors" title="View Code">
+                      <Github className="w-4 h-4" />
                     </a>
                   )}
                   {project.liveUrl && (
-                    <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="text-textMuted hover:text-textPrimary transition-colors flex items-center gap-2 text-sm font-medium">
-                      Live <ArrowRight className="w-4 h-4" />
+                    <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="p-2 bg-background hover:bg-surface border border-border rounded-full text-textMuted hover:text-primary transition-colors" title="Live Demo">
+                      <PlayCircle className="w-4 h-4" />
                     </a>
                   )}
+                  <span className="flex-1" />
+                  <Button asChild size="sm" variant="ghost" className="text-xs text-primary hover:text-secondary group/btn p-0 bg-transparent hover:bg-transparent h-auto">
+                    <Link href={`/projects/${project.slug}`} className="flex items-center gap-1">
+                      About Project <ArrowRight className="w-3.5 h-3.5 group-hover/btn:translate-x-0.5 transition-transform" />
+                    </Link>
+                  </Button>
                 </div>
               </div>
             </div>

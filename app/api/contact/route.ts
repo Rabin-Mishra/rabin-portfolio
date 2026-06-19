@@ -2,7 +2,11 @@ import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import { z } from "zod";
 
-const resend = new Resend(process.env.RESEND_API_KEY || "re_DBRsodjB_8tkLYQi9RCihY7QvCnMnTdY2");
+const apiKey = process.env.RESEND_API_KEY;
+if (!apiKey) {
+  console.warn("Warning: RESEND_API_KEY environment variable is missing.");
+}
+const resend = new Resend(apiKey);
 
 const contactSchema = z.object({
   name: z.string().min(2, "Name is too short"),

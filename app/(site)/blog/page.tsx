@@ -27,50 +27,54 @@ export default async function BlogPage() {
   const blogDescription = config?.blogDescription ?? "Practical DevOps notes, infrastructure breakdowns, and build logs from real projects, shaped into articles that are easier to read and revisit.";
 
   return (
-    <div className="mx-auto max-w-[1500px] px-4 py-12 md:px-8 lg:py-20">
-      <section className="mb-10 overflow-hidden rounded-[32px] border border-border/70 bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.14),transparent_34%),linear-gradient(180deg,rgba(248,250,252,0.9),rgba(255,255,255,0.82))] px-6 py-8 shadow-[0_28px_90px_-60px_rgba(15,23,42,0.45)] md:px-10 md:py-10">
-        <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_280px] lg:items-end">
-          <div className="max-w-4xl">
-            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.28em] text-textMuted">
-              Publication
-            </p>
-            <h1 className="font-editorial text-4xl font-semibold tracking-[-0.04em] text-textPrimary md:text-6xl">
-              {blogTitle}
-            </h1>
-            <p className="mt-5 max-w-2xl text-base leading-8 text-textMuted md:text-lg">
-              {blogDescription}
-            </p>
-          </div>
+    <div className="w-full">
+      <section className="w-full border-b border-border/70 bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.14),transparent_34%),linear-gradient(180deg,rgba(248,250,252,0.9),rgba(255,255,255,0.82))]">
+        <div className="mx-auto max-w-[1500px] px-4 py-16 md:px-8 lg:py-24">
+          <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_280px] lg:items-end">
+            <div className="max-w-4xl">
+              <p className="mb-3 text-xs font-semibold uppercase tracking-[0.28em] text-textMuted">
+                Publication
+              </p>
+              <h1 className="font-editorial text-4xl font-semibold tracking-[-0.04em] text-textPrimary md:text-6xl">
+                {blogTitle}
+              </h1>
+              <p className="mt-5 max-w-2xl text-base leading-8 text-textMuted md:text-lg">
+                {blogDescription}
+              </p>
+            </div>
 
-          <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-1">
-            <div className="rounded-2xl border border-border/70 bg-background/80 px-4 py-4 backdrop-blur">
-              <div className="text-2xl font-bold text-textPrimary">{posts.length}</div>
-              <div className="mt-1 text-sm text-textMuted">Published posts</div>
-            </div>
-            <div className="rounded-2xl border border-border/70 bg-background/80 px-4 py-4 backdrop-blur">
-              <div className="text-2xl font-bold text-textPrimary">Medium</div>
-              <div className="mt-1 text-sm text-textMuted">Editorial reading feel</div>
-            </div>
-            <div className="rounded-2xl border border-border/70 bg-background/80 px-4 py-4 backdrop-blur">
-              <div className="text-2xl font-bold text-textPrimary">Sanity</div>
-              <div className="mt-1 text-sm text-textMuted">Markdown-friendly workflow</div>
+            <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-1">
+              <div className="rounded-2xl border border-border/70 bg-background/80 px-4 py-4 backdrop-blur">
+                <div className="text-2xl font-bold text-textPrimary">{posts.length}</div>
+                <div className="mt-1 text-sm text-textMuted">Published posts</div>
+              </div>
+              <div className="rounded-2xl border border-border/70 bg-background/80 px-4 py-4 backdrop-blur">
+                <div className="text-2xl font-bold text-textPrimary">Medium</div>
+                <div className="mt-1 text-sm text-textMuted">Editorial reading feel</div>
+              </div>
+              <div className="rounded-2xl border border-border/70 bg-background/80 px-4 py-4 backdrop-blur">
+                <div className="text-2xl font-bold text-textPrimary">Sanity</div>
+                <div className="mt-1 text-sm text-textMuted">Markdown-friendly workflow</div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-        <Suspense fallback={<div className="h-10 w-full md:w-96 bg-surface animate-pulse rounded-full" />}>
-          <CategoryFilter />
-        </Suspense>
-        <Suspense fallback={<div className="h-10 w-full max-w-sm bg-surface animate-pulse rounded-full" />}>
-          <BlogSearch />
+      <div className="mx-auto max-w-[1500px] px-4 py-12 md:px-8">
+        <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+          <Suspense fallback={<div className="h-10 w-full md:w-96 bg-surface animate-pulse rounded-full" />}>
+            <CategoryFilter />
+          </Suspense>
+          <Suspense fallback={<div className="h-10 w-full max-w-sm bg-surface animate-pulse rounded-full" />}>
+            <BlogSearch />
+          </Suspense>
+        </div>
+
+        <Suspense fallback={<div className="py-20 text-center animate-pulse">Loading posts...</div>}>
+          <BlogList posts={posts} />
         </Suspense>
       </div>
-
-      <Suspense fallback={<div className="py-20 text-center animate-pulse">Loading posts...</div>}>
-        <BlogList posts={posts} />
-      </Suspense>
     </div>
   );
 }

@@ -38,7 +38,7 @@ const LinkedinIcon = ({ className }: { className?: string }) => (
 import { SanitySiteConfig } from "@/lib/types";
 
 const ROLES = [
-  "Aspiring DevOps Engineer",
+  "Aspiring MLOps Engineer",
   "Cloud Infrastructure Builder",
   "CI/CD Pipeline Enthusiast",
   "Open Source Advocate",

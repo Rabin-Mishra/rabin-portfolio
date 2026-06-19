@@ -10,7 +10,7 @@ import { SanityPost } from "@/lib/types";
 import { formatDate } from "@/lib/utils";
 
 export async function LatestPostsSection() {
-  const posts = await client.fetch<Omit<SanityPost, 'body' | 'relatedPosts'>[]>(getLatestPosts(3));
+  const posts = await client.fetch<Omit<SanityPost, 'body' | 'relatedPosts'>[]>(getLatestPosts(4));
 
   return (
     <section className="py-24 bg-surface-2 border-y border-border">
@@ -24,7 +24,7 @@ export async function LatestPostsSection() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {posts.map((post) => (
             <Link key={post.id} href={`/blog/${post.slug}`} className="group rounded-xl border border-border bg-background overflow-hidden flex flex-col hover:border-primary/50 transition-colors shadow-sm">
               <div className="aspect-video relative overflow-hidden bg-surface">

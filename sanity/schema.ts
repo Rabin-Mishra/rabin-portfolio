@@ -9,6 +9,7 @@ import skill from "./schemas/skill";
 import siteConfig from "./schemas/siteConfig";
 import workExperience from "./schemas/workExperience";
 import blockContent from "./schemas/blockContent";
+import publication from "./schemas/publication";
 
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
@@ -21,6 +22,7 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     skill,
     siteConfig,
     workExperience,
-    blockContent
+    blockContent,
+    publication
   ],
 };

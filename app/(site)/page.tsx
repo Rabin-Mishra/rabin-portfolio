@@ -3,6 +3,7 @@ import { StatsBar } from "@/components/home/StatsBar";
 import { TechStackSection } from "@/components/home/TechStackSection";
 import { FeaturedProjectsSection } from "@/components/home/FeaturedProjectsSection";
 import { LatestPostsSection } from "@/components/home/LatestPostsSection";
+import { PublicationsSection } from "@/components/home/PublicationsSection";
 import { client } from "@/sanity/lib/client";
 import { getSiteConfig, getSkills } from "@/sanity/lib/queries";
 import { SanitySiteConfig, SanitySkill } from "@/lib/types";
@@ -25,6 +26,7 @@ export default async function HomePage() {
       <TechStackSection skills={skills} />
       <FeaturedProjectsSection />
       <LatestPostsSection />
+      <PublicationsSection />
     </>
   );
 }

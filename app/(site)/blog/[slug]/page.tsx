@@ -101,125 +101,141 @@ export default async function BlogPostPage({ params }: Props) {
     },
   };
 
+  if (htmlDocument) {
+    return (
+      <>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+        <div className="w-full">
+          <HtmlDocumentEmbed html={htmlDocument} title={post.title} fullWidth />
+        </div>
+      </>
+    );
+  }
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <div className="mx-auto max-w-[1500px] px-4 py-10 md:px-8 md:py-14">
-        <div
-          className={`grid gap-10 lg:gap-14 ${
-            hasTableOfContents
-              ? "xl:grid-cols-[minmax(0,1fr)_300px] xl:items-start"
-              : ""
-          }`}
-        >
-          <article className="min-w-0">
-            <header className="mb-12 overflow-hidden rounded-[34px] border border-border/70 bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.12),transparent_34%),linear-gradient(180deg,rgba(248,250,252,0.96),rgba(255,255,255,0.88))] shadow-[0_30px_90px_-60px_rgba(15,23,42,0.45)]">
-              <div className="px-6 py-8 md:px-10 md:py-10">
-                <div className="mb-6 flex items-center gap-2 text-sm font-medium text-textMuted">
+      <div className="w-full pb-16">
+        <header className="mb-12 w-full border-b border-border/60 bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.12),transparent_34%),linear-gradient(180deg,rgba(248,250,252,0.96),rgba(255,255,255,0.88))]">
+          <div className="mx-auto max-w-[1500px] px-4 pt-12 pb-10 md:px-8 md:pt-16 md:pb-14">
+            <div className="mb-6 flex items-center gap-2 text-sm font-medium text-textMuted">
               <Link href="/blog" className="hover:text-primary transition-colors">
                 Blog
               </Link>
               <span>/</span>
               <span className="text-textPrimary truncate">{post.title}</span>
-                </div>
-
-                {post.category && (
-                  <Badge className="mb-6 border-primary/20 bg-primary/10 px-3 py-1 text-sm font-semibold text-primary">
-                    {post.category.title}
-                  </Badge>
-                )}
-
-                <h1 className="font-editorial max-w-5xl text-4xl font-semibold leading-[1.02] tracking-[-0.05em] text-textPrimary md:text-6xl">
-                  {post.title}
-                </h1>
-
-                {post.excerpt ? (
-                  <p className="mt-6 max-w-3xl text-lg leading-8 text-textMuted md:text-[1.35rem]">
-                    {post.excerpt}
-                  </p>
-                ) : null}
-
-                <div className="mt-8 flex flex-wrap items-center justify-between gap-5 border-t border-border/80 pt-6">
-                  <div className="flex items-center gap-4">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-full border border-border bg-background/85 text-sm font-bold text-textMuted shadow-sm">
-                      RM
-                    </div>
-                  <div>
-                      <div className="text-sm font-bold text-textPrimary">
-                      Rabin Mishra
-                    </div>
-                      <div className="mt-1 flex flex-wrap items-center gap-3 text-xs font-medium text-textMuted">
-                        <span className="flex items-center gap-1">
-                          <Calendar className="h-3 w-3" />
-                        {formatDate(post.publishedAt)}
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <Clock className="h-3 w-3" />
-                          {post.readTime || 5} min read
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <ShareButtons url={postUrl} title={post.title} />
-                </div>
-              </div>
-
-              {post.coverImage && (
-                <div className="relative aspect-[16/9] overflow-hidden border-t border-border bg-surface md:aspect-[2.25/1]">
-                <Image
-                  src={urlForImage(post.coverImage).url()}
-                  alt={post.title || "Post cover"}
-                  fill
-                  priority
-                  className="object-cover"
-                />
-                </div>
-              )}
-            </header>
-
-            <div className="w-full">
-              {htmlDocument ? (
-                <HtmlDocumentEmbed html={htmlDocument} title="Embedded HTML article" />
-              ) : (
-                <PortableTextRenderer value={post.body} />
-              )}
             </div>
 
-            {post.tags && post.tags.length > 0 && (
-              <div className="mx-auto mt-14 flex max-w-3xl flex-wrap gap-2 border-t border-border pt-8 px-4 sm:px-6 lg:px-0">
-                <span className="mr-2 py-1 text-sm font-medium text-textMuted">
-                  Tags:
-                </span>
-                {post.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="cursor-pointer rounded-full border border-border bg-surface px-3 py-1.5 text-xs font-medium text-textMuted transition-colors hover:text-primary"
-                  >
-                    #{tag}
-                  </span>
-                ))}
+            {post.category && (
+              <Badge className="mb-6 border-primary/20 bg-primary/10 px-3 py-1 text-sm font-semibold text-primary">
+                {post.category.title}
+              </Badge>
+            )}
+
+            <h1 className="font-editorial max-w-5xl text-4xl font-semibold leading-[1.02] tracking-[-0.05em] text-textPrimary md:text-6xl">
+              {post.title}
+            </h1>
+
+            {post.excerpt ? (
+              <p className="mt-6 max-w-3xl text-lg leading-8 text-textMuted md:text-[1.35rem]">
+                {post.excerpt}
+              </p>
+            ) : null}
+
+            <div className="mt-8 flex flex-wrap items-center justify-between gap-5 border-t border-border/80 pt-6">
+              <div className="flex items-center gap-4">
+                <div className="flex h-12 w-12 items-center justify-center rounded-full border border-border bg-background/85 text-sm font-bold text-textMuted shadow-sm">
+                  RM
+                </div>
+                <div>
+                  <div className="text-sm font-bold text-textPrimary">
+                    Rabin Mishra
+                  </div>
+                  <div className="mt-1 flex flex-wrap items-center gap-3 text-xs font-medium text-textMuted">
+                    <span className="flex items-center gap-1">
+                      <Calendar className="h-3 w-3" />
+                      {formatDate(post.publishedAt)}
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <Clock className="h-3 w-3" />
+                      {post.readTime || 5} min read
+                    </span>
+                  </div>
+                </div>
               </div>
-            )}
 
-            <AuthorCard />
+              <ShareButtons url={postUrl} title={post.title} />
+            </div>
+          </div>
 
-            {post.category?.id && (
-              <RelatedPosts
-                categoryId={post.category.id}
-                currentPostId={post.id}
+          {post.coverImage && (
+            <div className="relative w-full aspect-[16/9] md:aspect-[2.25/1] overflow-hidden border-t border-border bg-surface">
+              <Image
+                src={urlForImage(post.coverImage).url()}
+                alt={post.title || "Post cover"}
+                fill
+                priority
+                className="object-cover"
               />
-            )}
-          </article>
+            </div>
+          )}
+        </header>
 
-          {hasTableOfContents ? (
-            <aside className="min-w-0">
-              <TableOfContents headings={headings} />
-            </aside>
-          ) : null}
+        <div className="mx-auto max-w-[1500px] px-4 md:px-8">
+          <div
+            className={`grid gap-10 lg:gap-14 ${
+              hasTableOfContents
+                ? "xl:grid-cols-[minmax(0,1fr)_300px] xl:items-start"
+                : ""
+            }`}
+          >
+            <article className="min-w-0">
+              <div className="w-full">
+                {htmlDocument ? (
+                  <HtmlDocumentEmbed html={htmlDocument} title="Embedded HTML article" />
+                ) : (
+                  <PortableTextRenderer value={post.body} />
+                )}
+              </div>
+
+              {post.tags && post.tags.length > 0 && (
+                <div className="mx-auto mt-14 flex max-w-3xl flex-wrap gap-2 border-t border-border pt-8 px-4 sm:px-6 lg:px-0">
+                  <span className="mr-2 py-1 text-sm font-medium text-textMuted">
+                    Tags:
+                  </span>
+                  {post.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="cursor-pointer rounded-full border border-border bg-surface px-3 py-1.5 text-xs font-medium text-textMuted transition-colors hover:text-primary"
+                    >
+                      #{tag}
+                    </span>
+                  ))}
+                </div>
+              )}
+
+              <AuthorCard />
+
+              {post.category?.id && (
+                <RelatedPosts
+                  categoryId={post.category.id}
+                  currentPostId={post.id}
+                />
+              )}
+            </article>
+
+            {hasTableOfContents ? (
+              <aside className="min-w-0">
+                <TableOfContents headings={headings} />
+              </aside>
+            ) : null}
+          </div>
         </div>
       </div>
     </>

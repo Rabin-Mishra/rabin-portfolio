@@ -144,3 +144,17 @@ export interface SanityWorkExperience {
   description?: string;
   techUsed?: string[];
 }
+
+export interface SanityPublication {
+  _id: string;
+  title: string;
+  slug: string;
+  authors: string;
+  venue: string;
+  publishedDate: string;
+  abstract?: string;
+  paperUrl?: string;
+  pdfFileUrl?: string;
+  featured: boolean;
+  order: number;
+}

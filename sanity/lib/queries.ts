@@ -211,3 +211,50 @@ export const getWorkExperience = groq`
     techUsed
   }
 `;
+
+export const getAllPublications = groq`
+  *[_type == "publication"] | order(order asc, publishedDate desc) {
+    _id,
+    title,
+    "slug": slug.current,
+    authors,
+    venue,
+    publishedDate,
+    abstract,
+    paperUrl,
+    "pdfFileUrl": pdfFile.asset->url,
+    featured,
+    order
+  }
+`;
+
+export const getFeaturedPublications = groq`
+  *[_type == "publication" && featured == true] | order(order asc, publishedDate desc) {
+    _id,
+    title,
+    "slug": slug.current,
+    authors,
+    venue,
+    publishedDate,
+    abstract,
+    paperUrl,
+    "pdfFileUrl": pdfFile.asset->url,
+    featured,
+    order
+  }
+`;
+
+export const getProjectBySlug = groq`
+  *[_type == "project" && slug.current == $slug][0] {
+    "id": _id,
+    title,
+    "slug": slug.current,
+    description,
+    techStack,
+    githubUrl,
+    liveUrl,
+    coverImage,
+    featured,
+    order
+  }
+`;

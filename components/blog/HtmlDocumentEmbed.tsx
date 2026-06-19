@@ -36,9 +36,11 @@ function getDocumentHeight(iframe: HTMLIFrameElement): number {
 export function HtmlDocumentEmbed({
   html,
   title,
+  fullWidth = false,
 }: {
   html: string;
   title: string;
+  fullWidth?: boolean;
 }) {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [height, setHeight] = useState(MIN_IFRAME_HEIGHT);
@@ -176,7 +178,13 @@ export function HtmlDocumentEmbed({
   }, [html]);
 
   return (
-    <div className="not-prose my-10 overflow-hidden rounded-[28px] border border-border/80 bg-surface shadow-[0_24px_80px_-56px_rgba(15,23,42,0.45)]">
+    <div
+      className={
+        fullWidth
+          ? "w-full"
+          : "not-prose my-10 overflow-hidden rounded-[28px] border border-border/80 bg-surface shadow-[0_24px_80px_-56px_rgba(15,23,42,0.45)]"
+      }
+    >
       <iframe
         ref={iframeRef}
         title={title}

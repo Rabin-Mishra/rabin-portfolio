@@ -28,9 +28,24 @@ export function Navbar({ config }: { config: SanitySiteConfig }) {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
   const [scrolled, setScrolled] = React.useState(false);
+  const [visible, setVisible] = React.useState(true);
+  const lastScrollY = React.useRef(0);
 
   React.useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      
+      // Auto-hide when scrolling down, show when scrolling up
+      if (currentScrollY > lastScrollY.current && currentScrollY > 80) {
+        setVisible(false);
+      } else {
+        setVisible(true);
+      }
+      
+      lastScrollY.current = currentScrollY;
+      setScrolled(currentScrollY > 20);
+    };
+
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -46,7 +61,8 @@ export function Navbar({ config }: { config: SanitySiteConfig }) {
           "fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b",
           scrolled
             ? "border-border bg-background/80 backdrop-blur-md shadow-sm"
-            : "border-transparent bg-transparent"
+            : "border-transparent bg-transparent",
+          visible ? "translate-y-0" : "-translate-y-full"
         )}
       >
         <div className="container mx-auto px-4 md:px-8 h-16 flex items-center justify-between">
