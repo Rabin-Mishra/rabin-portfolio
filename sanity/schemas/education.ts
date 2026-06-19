@@ -48,7 +48,7 @@ export default defineType({
     }),
     defineField({
       name: "gpa",
-      title: "GPA",
+      title: "CGPA",
       type: "number",
     }),
     defineField({

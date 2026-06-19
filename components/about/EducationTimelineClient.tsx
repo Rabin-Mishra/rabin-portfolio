@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { GraduationCap, Calendar } from "lucide-react";
 import { Badge } from "@/components/ui/Badge";
 import { SanityEducation } from "@/lib/types";
+import Image from "next/image";
 
 export function EducationTimelineClient({ educations }: { educations: SanityEducation[] }) {
   if (!educations || educations.length === 0) {
@@ -38,30 +39,44 @@ export function EducationTimelineClient({ educations }: { educations: SanityEduc
             >
               <div className="absolute w-4 h-4 bg-primary rounded-full -left-[9px] top-1.5 ring-4 ring-background" />
               
-              <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4 mb-2 text-sm text-textMuted font-mono">
-                <span className="flex items-center gap-1">
-                  <Calendar className="w-4 h-4" /> {edu.startDate} – {edu.isCurrent ? "Present" : edu.endDate}
-                </span>
-              </div>
-              
-              <h3 className="text-xl md:text-2xl font-bold text-textPrimary mb-1">
-                {edu.institution}
-              </h3>
-              <p className="text-lg text-primary font-medium mb-3">
-                {edu.degree} in {edu.field}
-              </p>
-              
-              {edu.gpa && (
-                <div className="flex items-center gap-3 mb-4">
-                  <Badge variant="secondary" className="border-transparent">GPA: {edu.gpa}</Badge>
+              <div className="flex gap-4 items-start">
+                {edu.logoUrl && (
+                  <div className="relative w-14 h-14 overflow-hidden rounded-xl border border-border bg-surface shrink-0 shadow-sm mt-1">
+                    <Image
+                      src={edu.logoUrl}
+                      alt={`${edu.institution} logo`}
+                      fill
+                      className="object-contain p-1"
+                    />
+                  </div>
+                )}
+                <div className="flex-1 min-w-0">
+                  <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4 mb-2 text-sm text-textMuted font-mono">
+                    <span className="flex items-center gap-1">
+                      <Calendar className="w-4 h-4" /> {edu.startDate} – {edu.isCurrent ? "Present" : edu.endDate}
+                    </span>
+                  </div>
+                  
+                  <h3 className="text-xl md:text-2xl font-bold text-textPrimary mb-1">
+                    {edu.institution}
+                  </h3>
+                  <p className="text-lg text-primary font-medium mb-3">
+                    {edu.degree} in {edu.field}
+                  </p>
+                  
+                  {edu.gpa && (
+                    <div className="flex items-center gap-3 mb-4">
+                      <Badge variant="secondary" className="border-transparent">CGPA: {edu.gpa}</Badge>
+                    </div>
+                  )}
+                  
+                  {edu.description && (
+                    <p className="text-textMuted leading-relaxed max-w-3xl whitespace-pre-wrap">
+                      {edu.description}
+                    </p>
+                  )}
                 </div>
-              )}
-              
-              {edu.description && (
-                <p className="text-textMuted leading-relaxed max-w-3xl whitespace-pre-wrap">
-                  {edu.description}
-                </p>
-              )}
+              </div>
             </motion.div>
           ))}
         </div>

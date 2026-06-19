@@ -80,6 +80,7 @@ export interface SanityEducation {
   gpa?: number;
   description?: string;
   institutionLogo?: any;
+  logoUrl?: string;
 }
 
 export interface SanityCertification {

@@ -6,7 +6,7 @@ import { SanityStat } from "@/lib/types";
 
 const DEFAULT_STATS: SanityStat[] = [
   { value: "18", suffix: "+", label: "Certifications" },
-  { value: "3", suffix: ".9", label: "GPA" },
+  { value: "3", suffix: ".9", label: "CGPA" },
   { value: "5", suffix: "+", label: "Projects" },
   { value: "NEC", suffix: "", label: "Registered Eng." }
 ];
