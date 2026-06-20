@@ -99,7 +99,8 @@ export interface SanitySkill {
   name: string;
   category: string;
   proficiencyLevel?: number;
-  icon: string;
+  icon?: string;
+  uploadedIcon?: any;
 }
 
 export interface SanityStat {

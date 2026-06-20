@@ -7,6 +7,8 @@ import { getSiteConfig } from '@/sanity/lib/queries';
 import { SanitySiteConfig } from '@/lib/types';
 import { SITE_CONFIG as FALLBACK_CONFIG } from '@/lib/constants';
 
+import { PreviewBanner } from '@/components/layout/PreviewBanner';
+
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -19,11 +21,18 @@ export async function generateMetadata(): Promise<Metadata> {
   const authorName = config?.ownerName || FALLBACK_CONFIG.author;
 
   return {
+    metadataBase: new URL('https://rabinmishra.com.np'),
+    alternates: {
+      canonical: 'https://rabinmishra.com.np',
+    },
     title: {
       template: `${authorName} | %s`,
       default: `${authorName} | DevOps Engineer`,
     },
     description: description,
+    verification: {
+      google: 'beWfOyhIbkBRg-O5f-0Lbus3yV56niPSYI1HStN-TYs',
+    },
     openGraph: {
       title: authorName,
       description: description,
@@ -63,18 +72,22 @@ export default async function RootLayout({
     "@type": "Person",
     name: safeConfig.ownerName,
     jobTitle: "IT Engineer | Aspiring DevOps Engineer",
-    url: safeConfig.domain,
+    url: "https://rabinmishra.com.np",
     email: safeConfig.email,
     sameAs: [
-      safeConfig.githubUrl,
-      safeConfig.linkedinUrl
-    ].filter(Boolean)
+      "https://www.linkedin.com/in/rabin-mishra-3782ba214",
+      "https://github.com/Rabin-Mishra",
+      safeConfig.linkedinUrl,
+      safeConfig.githubUrl
+    ].filter((val): val is string => Boolean(val))
+     .filter((val, index, self) => self.indexOf(val) === index)
   };
 
   return (
     <html lang="en">
-      <body className={`${inter.variable} min-h-screen flex flex-col bg-background text-textPrimary antialiased`}>
+      <body className={`${inter.variable} antialiased`}>
         {children}
+        <PreviewBanner />
         <Analytics />
         <script
           type="application/ld+json"

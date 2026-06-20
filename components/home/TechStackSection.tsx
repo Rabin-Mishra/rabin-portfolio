@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { SKILLS } from "@/lib/constants";
 import { SanitySkill } from "@/lib/types";
+import { urlForImage } from "@/sanity/lib/image";
 
 interface TechStackSectionProps {
   skills?: SanitySkill[] | null;
@@ -37,7 +38,15 @@ export function TechStackSection({ skills }: TechStackSectionProps) {
             >
               <div className="w-12 h-12 mb-4 flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
                 <img
-                  src={("iconUrl" in skill && skill.iconUrl) || `https://cdn.simpleicons.org/${skill.icon}`}
+                  src={
+                    ("uploadedIcon" in skill && skill.uploadedIcon)
+                      ? urlForImage(skill.uploadedIcon).width(128).height(128).fit("max").auto("format").url()
+                      : ("iconUrl" in skill && skill.iconUrl)
+                      ? skill.iconUrl
+                      : skill.icon
+                      ? `https://cdn.simpleicons.org/${skill.icon}`
+                      : ""
+                  }
                   alt={skill.name}
                   width={32}
                   height={32}

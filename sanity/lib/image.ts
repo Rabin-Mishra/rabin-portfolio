@@ -1,5 +1,7 @@
 import createImageUrlBuilder from "@sanity/image-url";
-import { dataset, projectId } from "./client";
+
+const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "u6l38s23";
+const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || "production";
 
 const imageBuilder = createImageUrlBuilder({
   projectId: projectId || "",

@@ -36,7 +36,15 @@ export default defineType({
       title: "Icon Slug",
       description: "SimpleIcons slug (e.g. 'amazonaws', 'docker')",
       type: "string",
-      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "uploadedIcon",
+      title: "Uploaded Icon/Logo",
+      description: "Upload a custom SVG/PNG/JPEG icon if SimpleIcons is not available or doesn't render properly.",
+      type: "image",
+      options: {
+        hotspot: true,
+      },
     }),
   ],
   preview: {

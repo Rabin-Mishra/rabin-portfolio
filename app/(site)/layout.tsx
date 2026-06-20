@@ -23,12 +23,12 @@ export default async function SiteLayout({
   };
 
   return (
-    <>
+    <div className="min-h-screen flex flex-col bg-background text-textPrimary">
       <Navbar config={safeConfig} />
       <main className="flex-1 pt-16">
         {children}
       </main>
       <Footer config={safeConfig} />
-    </>
+    </div>
   );
 }

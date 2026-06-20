@@ -91,7 +91,7 @@ export const getAllProjects = groq`
 `;
 
 export const getFeaturedProjects = groq`
-  *[_type == "project" && featured == true] | order(order asc) {
+  *[_type == "project" && featured == true] | order(order asc)[0...4] {
     "id": _id,
     title,
     "slug": slug.current,
@@ -166,7 +166,8 @@ export const getSkills = groq`
     name,
     category,
     proficiencyLevel,
-    icon
+    icon,
+    uploadedIcon
   }
 `;
 
