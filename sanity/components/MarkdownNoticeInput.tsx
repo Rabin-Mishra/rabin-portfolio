@@ -65,7 +65,10 @@ export function MarkdownNoticeInput(props: PortableTextInputProps) {
     }
 
     event.preventDefault();
-    props.onChange(PatchEvent.from(set(convertedBlocks)));
+    const patch = PatchEvent.from(set(convertedBlocks));
+    setTimeout(() => {
+      props.onChange(patch);
+    }, 0);
     setStatus(
       `Pasted Markdown was auto-converted into ${convertedBlocks.length} Portable Text block${
         convertedBlocks.length === 1 ? "" : "s"

@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, Github, Globe } from "lucide-react";
-import { client } from "@/sanity/lib/client";
+import { client, getClient } from "@/sanity/lib/client";
 import { SanityProject } from "@/lib/types";
 import { getProjectBySlug } from "@/sanity/lib/queries";
 import { urlForImage } from "@/sanity/lib/image";
@@ -18,7 +18,8 @@ interface ProjectPageProps {
 
 export async function generateMetadata({ params }: ProjectPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const project = await client.fetch<SanityProject | null>(getProjectBySlug, { slug });
+  const dynamicClient = await getClient();
+  const project = await dynamicClient.fetch<SanityProject | null>(getProjectBySlug, { slug });
 
   if (!project) {
     return {
@@ -34,7 +35,8 @@ export async function generateMetadata({ params }: ProjectPageProps): Promise<Me
 
 export default async function ProjectDetailPage({ params }: ProjectPageProps) {
   const { slug } = await params;
-  const project = await client.fetch<SanityProject | null>(getProjectBySlug, { slug });
+  const dynamicClient = await getClient();
+  const project = await dynamicClient.fetch<SanityProject | null>(getProjectBySlug, { slug });
 
   if (!project) {
     notFound();

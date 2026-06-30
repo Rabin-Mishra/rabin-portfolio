@@ -23,7 +23,7 @@ export async function getClient() {
 
   if (isDraft) {
     return client.withConfig({
-      token: process.env.SANITY_API_READ_TOKEN,
+      token: process.env.SANITY_API_READ_TOKEN || process.env.SANITY_API_TOKEN,
       perspective: "previewDrafts",
       useCdn: false,
     });

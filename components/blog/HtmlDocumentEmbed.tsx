@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 
 const MIN_IFRAME_HEIGHT = 640;
 
@@ -44,6 +44,25 @@ export function HtmlDocumentEmbed({
 }) {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [height, setHeight] = useState(MIN_IFRAME_HEIGHT);
+
+  // Inject style block directly into the HTML string to override scroll reveal animations.
+  // This is 100% reliable as it doesn't depend on clientside document injection or DOM load timing.
+  const processedHtml = useMemo(() => {
+    if (!html) return "";
+    const overrideStyle = `
+<style id="iframe-reveal-override">
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+    visibility: visible !important;
+  }
+</style>`;
+    if (html.includes("</head>")) {
+      return html.replace("</head>", `${overrideStyle}</head>`);
+    }
+    return `${overrideStyle}${html}`;
+  }, [html]);
 
   useEffect(() => {
     const iframe = iframeRef.current;
@@ -188,7 +207,7 @@ export function HtmlDocumentEmbed({
       <iframe
         ref={iframeRef}
         title={title}
-        srcDoc={html}
+        srcDoc={processedHtml}
         loading="lazy"
         sandbox="allow-same-origin allow-scripts"
         scrolling="no"

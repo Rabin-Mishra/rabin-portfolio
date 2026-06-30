@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import { Clock, Calendar } from "lucide-react";
-import { client } from "@/sanity/lib/client";
+import { client, getClient } from "@/sanity/lib/client";
 import { urlForImage } from "@/sanity/lib/image";
 import { getPostBySlug } from "@/sanity/lib/queries";
 import { SanityPost } from "@/lib/types";
@@ -34,7 +34,8 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const post = await client.fetch<SanityPost>(getPostBySlug, { slug });
+  const dynamicClient = await getClient();
+  const post = await dynamicClient.fetch<SanityPost>(getPostBySlug, { slug });
   if (!post) return {};
 
   return {
@@ -56,7 +57,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params;
-  const post = await client.fetch<SanityPost>(getPostBySlug, { slug });
+  const dynamicClient = await getClient();
+  const post = await dynamicClient.fetch<SanityPost>(getPostBySlug, { slug });
 
   if (!post) {
     notFound();

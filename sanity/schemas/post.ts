@@ -67,8 +67,19 @@ export default defineType({
       validation: (Rule) =>
         Rule.custom((value, context) => {
           const document = context.document;
-          // If an HTML file is uploaded, the body is optional
+          // If an HTML file is uploaded, the body must be empty
           if (document?.htmlFile) {
+            if (value && Array.isArray(value) && value.length > 0) {
+              const hasContent = value.some((block: any) => {
+                if (block._type === "block") {
+                  return block.children?.some((c: any) => c.text?.trim().length > 0);
+                }
+                return true;
+              });
+              if (hasContent) {
+                return "You have uploaded an HTML file. Please clear the Body content or remove the HTML file.";
+              }
+            }
             return true;
           }
           // Otherwise, it is required
@@ -86,6 +97,25 @@ export default defineType({
       options: {
         accept: ".html",
       },
+      validation: (Rule) =>
+        Rule.custom((value, context) => {
+          const document = context.document;
+          if (value && document?.body) {
+            const body = document.body as any;
+            if (Array.isArray(body) && body.length > 0) {
+              const hasContent = body.some((block: any) => {
+                if (block._type === "block") {
+                  return block.children?.some((c: any) => c.text?.trim().length > 0);
+                }
+                return true;
+              });
+              if (hasContent) {
+                return "You cannot upload an HTML file while the Body has content. Please clear the Body first.";
+              }
+            }
+          }
+          return true;
+        }),
     }),
     defineField({
       name: "readTime",
